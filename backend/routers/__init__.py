@@ -32,6 +32,10 @@ def register_routers(app: FastAPI, **services):
     source_router.source_service = services["source_service"]
     app.include_router(source_router)
 
+    # Register knowledge base routes
+    knowledge_base_router.knowledge_base_service = services["knowledge_base_service"]
+    app.include_router(knowledge_base_router)
+
     # Register chat routes with dependencies
     app.include_router(chat_router)
 

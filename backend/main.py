@@ -6,6 +6,7 @@ from repository.feature_repository import FeatureRepositoryAsync
 from services.feature_service import FeatureService
 from repository.source_repository import SourceRepositoryAsync
 from services.source_service import SourceService
+from services.knowledge_base_service import KnowledgeBaseService
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -36,10 +37,11 @@ def create_app():
     return app
 
 
-def setup_routes(app: FastAPI, feature_service: FeatureService, source_service: SourceService):
+def setup_routes(app: FastAPI, feature_service: FeatureService, source_service: SourceService, knowledge_base_service: KnowledgeBaseService):
     """Register API routes with their dependencies."""
     register_routers(app, feature_service=feature_service,
-                     source_service=source_service)
+                     source_service=source_service,
+                     knowledge_base_service=knowledge_base_service)
 
 
 def create_asgi_app():
@@ -59,8 +61,11 @@ def create_asgi_app():
 
     source_service = SourceService(source_repository=source_repository)
 
+    knowledge_base_service = KnowledgeBaseService()
+
     setup_routes(app, feature_service=feature_service,
-                 source_service=source_service)
+                 source_service=source_service,
+                 knowledge_base_service=knowledge_base_service)
 
     return app
 
