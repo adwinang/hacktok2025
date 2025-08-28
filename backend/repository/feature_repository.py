@@ -1,0 +1,84 @@
+import os
+from typing import Any, AsyncGenerator, Dict
+import dotenv
+from bson.objectid import ObjectId
+from pymongo import AsyncMongoClient
+
+dotenv.load_dotenv()
+mongodb_uri = os.getenv('MONGO_URI')
+
+
+class FeatureRepositoryAsync:
+    def __init__(self, db_name: str, collection_name: str):
+        self.client = AsyncMongoClient(mongodb_uri)
+        self.db = self.client[db_name]
+        self.collection = self.db[collection_name]
+
+    async def get_features(self) -> list[dict]:
+        features = await self.collection.find().to_list(length=None)
+        for feature in features:
+            if "_id" in feature:
+                feature["id"] = str(feature.pop("_id"))
+        return features
+
+    async def add_feature(self, feature) -> str:
+        new_feature = {**feature}
+        if feature.get("id"):
+            new_feature["_id"] = ObjectId(feature["id"])
+        new_feature.pop("id", None)
+        result = await self.collection.insert_one(new_feature)
+        return str(result.inserted_id)
+
+    async def stream_features(self) -> AsyncGenerator[Dict[str, Any], None]:
+        try:
+            pipeline = [
+                {
+                    "$match": {
+                        "operationType": {"$in": ["insert", "update", "replace"]},
+                        "fullDocument": {"$exists": True}
+                    }
+                }
+            ]
+
+            change_stream = await self.collection.watch(pipeline, full_document="updateLookup")
+
+            try:
+                async for change in change_stream:
+                    full_document = change["fullDocument"].copy()
+                    if "_id" in full_document:
+                        full_document["id"] = str(full_document.pop("_id"))
+
+                    change_data = {
+                        "operation_type": change["operationType"],
+                        "feature_id": full_document["id"],
+                        "updated_document": full_document,
+                        "timestamp": change["clusterTime"],
+                        "resume_token": change["_id"]
+                    }
+
+                    yield change_data
+
+            except Exception as stream_error:
+                print(f"❌ Error during streaming: {stream_error}")
+                raise
+            finally:
+                try:
+                    await change_stream.close()
+                except:
+                    pass
+
+        except Exception as e:
+            print(f"❌ Error setting up change stream: {e}")
+            print(f"   Error type: {type(e).__name__}")
+            raise
+
+    async def updateFeature(self, feature_id: str, update_data: dict) -> bool:
+        try:
+            result = await self.collection.update_one(
+                {"_id": ObjectId(feature_id)},
+                {"$set": update_data}
+            )
+            return result.modified_count > 0
+        except Exception as e:
+            print(f"Error updating feature: {e}")
+            return False
