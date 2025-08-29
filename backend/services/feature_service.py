@@ -11,7 +11,7 @@ class FeatureService:
 
     async def get_features_async(self) -> list[Feature]:
         try:
-            features_data = await self.feature_repository.get_features()
+            features_data = await self.feature_repository.get_features_async()
             features = []
             for feature_data in features_data:
                 feature = Feature(**feature_data)
@@ -20,8 +20,16 @@ class FeatureService:
         except Exception as e:
             raise e
 
+    async def get_feature_async(self, feature_id: str) -> Feature:
+        try:
+            feature_data = await self.feature_repository.get_feature_async(feature_id)
+            return Feature(**feature_data)
+        except Exception as e:
+            raise e
+
     async def create_feature_async(self, feature_request: FeatureCreateRequest) -> str:
         try:
+            # TODO: Add a pre-processing layer to add more metadata to the feature
             feature = Feature(
                 name=feature_request.name,
                 description=feature_request.description,
@@ -29,7 +37,7 @@ class FeatureService:
                 created_at=datetime.utcnow(),
                 updated_at=None
             )
-            feature_id = await self.feature_repository.add_feature(feature.model_dump())
+            feature_id = await self.feature_repository.add_feature_async(feature.model_dump())
             return feature_id
         except Exception as e:
             raise e
@@ -47,7 +55,7 @@ class FeatureService:
             if update_data:
                 update_data["updated_at"] = datetime.utcnow()
 
-            return await self.feature_repository.updateFeature(feature_id, update_data)
+            return await self.feature_repository.update_feature_async(feature_id, update_data)
         except Exception as e:
             raise e
 

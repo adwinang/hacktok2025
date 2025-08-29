@@ -11,6 +11,10 @@ from services.source_content_service import SourceContentService
 from services.knowledge_base_service import KnowledgeBaseService
 from services.compliance_analysis_service import ComplianceAnalysisService
 
+from repository.audit_report_repository import AuditReportRepositoryAsync
+from services.audit_report_service import AuditReportService
+from services.compliance_action_service import ComplianceActionService
+
 from agents.compliance_analyzer_agent import ComplianceAnalyzerAgent
 
 from dotenv import load_dotenv
@@ -43,13 +47,15 @@ def create_app():
     return app
 
 
-def setup_routes(app: FastAPI, feature_service: FeatureService, source_service: SourceService, source_content_service: SourceContentService, knowledge_base_service: KnowledgeBaseService, compliance_analysis_service: ComplianceAnalysisService):
+def setup_routes(app: FastAPI, feature_service: FeatureService, source_service: SourceService, source_content_service: SourceContentService, knowledge_base_service: KnowledgeBaseService, compliance_analysis_service: ComplianceAnalysisService, audit_report_service: AuditReportService, compliance_action_service: ComplianceActionService):
     """Register API routes with their dependencies."""
     register_routers(app, feature_service=feature_service,
                      source_service=source_service,
                      source_content_service=source_content_service,
                      knowledge_base_service=knowledge_base_service,
-                     compliance_analysis_service=compliance_analysis_service)
+                     compliance_analysis_service=compliance_analysis_service,
+                     audit_report_service=audit_report_service,
+                     compliance_action_service=compliance_action_service)
 
 
 def create_asgi_app():
@@ -89,11 +95,27 @@ def create_asgi_app():
         compliance_analyzer_agent=ComplianceAnalyzerAgent()
     )
 
+    audit_report_repository = AuditReportRepositoryAsync(
+        db_name="hacktok",
+        collection_name="audit_reports"
+    )
+
+    audit_report_service = AuditReportService(
+        audit_report_repository=audit_report_repository
+    )
+
+    compliance_action_service = ComplianceActionService(
+        audit_report_service=audit_report_service,
+        feature_service=feature_service
+    )
+
     setup_routes(app, feature_service=feature_service,
                  source_service=source_service,
                  source_content_service=source_content_service,
                  knowledge_base_service=knowledge_base_service,
-                 compliance_analysis_service=compliance_analysis_service)
+                 compliance_analysis_service=compliance_analysis_service,
+                 audit_report_service=audit_report_service,
+                 compliance_action_service=compliance_action_service)
 
     return app
 

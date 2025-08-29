@@ -14,14 +14,20 @@ class FeatureRepositoryAsync:
         self.db = self.client[db_name]
         self.collection = self.db[collection_name]
 
-    async def get_features(self) -> list[dict]:
+    async def get_features_async(self) -> list[dict]:
         features = await self.collection.find().to_list(length=None)
         for feature in features:
             if "_id" in feature:
                 feature["id"] = str(feature.pop("_id"))
         return features
 
-    async def add_feature(self, feature) -> str:
+    async def get_feature_async(self, feature_id: str) -> dict:
+        feature = await self.collection.find_one({"_id": ObjectId(feature_id)})
+        if feature:
+            feature["id"] = str(feature.pop("_id"))
+        return feature
+
+    async def add_feature_async(self, feature) -> str:
         new_feature = {**feature}
         if feature.get("id"):
             new_feature["_id"] = ObjectId(feature["id"])
@@ -72,7 +78,7 @@ class FeatureRepositoryAsync:
             print(f"   Error type: {type(e).__name__}")
             raise
 
-    async def updateFeature(self, feature_id: str, update_data: dict) -> bool:
+    async def update_feature_async(self, feature_id: str, update_data: dict) -> bool:
         try:
             result = await self.collection.update_one(
                 {"_id": ObjectId(feature_id)},
