@@ -10,7 +10,7 @@ from .health import health_router
 from .features import feature_router
 from .sources import source_router
 from .chat import chat_router
-from .knowledge_base import knowledge_base_router
+from .compliance import compliance_router
 
 
 def register_routers(app: FastAPI, **services):
@@ -30,17 +30,16 @@ def register_routers(app: FastAPI, **services):
 
     # Register source routes
     source_router.source_service = services["source_service"]
+    source_router.source_content_service = services["source_content_service"]
+    source_router.knowledge_base_service = services["knowledge_base_service"]
     app.include_router(source_router)
 
-    # Register knowledge base routes
-    knowledge_base_router.knowledge_base_service = services["knowledge_base_service"]
-    app.include_router(knowledge_base_router)
+    # Register compliance routes
+    compliance_router.compliance_analysis_service = services["compliance_analysis_service"]
+    app.include_router(compliance_router)
 
     # Register chat routes with dependencies
     app.include_router(chat_router)
-
-    # Register knowledge base routes
-    app.include_router(knowledge_base_router)
 
 
 __all__ = ['register_routers']

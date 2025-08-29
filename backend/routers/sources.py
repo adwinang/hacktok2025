@@ -1,5 +1,7 @@
+from typing import List
 from fastapi import APIRouter, HTTPException
-from model.source import SourceCreateRequest
+from model.source import Source, SourceCreateRequest
+from model.source_content import SourceContentCreateRequest
 
 
 source_router = APIRouter(prefix="/sources", tags=["source"])
@@ -40,5 +42,70 @@ async def delete_source(source_id: str):
         source_service = source_router.source_service
         await source_service.delete_source_async(source_id)
         return {"success": True}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@source_router.get("/contents")
+async def get_source_contents():
+    """
+    Retrieve all source contents.
+    """
+    try:
+        source_content_service = source_router.source_content_service
+        source_contents = await source_content_service.get_source_contents_async()
+        return {"success": True, "source_contents": source_contents}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@source_router.get("/content")
+async def get_source_content(url: str):
+    """
+    Retrieve source content by source URL.
+    """
+    try:
+        source_content_service = source_router.source_content_service
+        source_contents = await source_content_service.get_source_content_by_source_url_async(url)
+        return {"success": True, "url": url, "source_contents": source_contents}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@source_router.post("/content")
+async def create_source_content(source_content_request: SourceContentCreateRequest):
+    """
+    Create a new source content.
+    """
+    try:
+        source_content_service = source_router.source_content_service
+        source_content_id = await source_content_service.create_source_content_async(source_content_request)
+        return {"success": True, "source_content_id": source_content_id}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@source_router.post("/refresh-all")
+async def refresh_all_sources():
+    """
+    Refresh all sources.
+    """
+    try:
+        knowledge_base_service = source_router.knowledge_base_service
+        source_contents_updates = await knowledge_base_service.refresh_all_sources_content_async()
+        return {"success": True, "source_contents_updates": source_contents_updates}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@source_router.post("/refresh")
+async def refresh_given_sources(sources: List[Source]):
+    """
+    Refresh given sources.
+    """
+    try:
+        knowledge_base_service = source_router.knowledge_base_service
+        source_contents_updates = await knowledge_base_service.refresh_given_sources_content_async(sources)
+        return {"success": True, "source_contents_updates": source_contents_updates}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
