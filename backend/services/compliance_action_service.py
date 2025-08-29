@@ -44,3 +44,23 @@ class ComplianceActionService:
             await self.feature_service.update_feature_async(audit_report["feature_id"], feature_update_request)
         except Exception as e:
             raise e
+
+    async def verify_audit_report_async(self, audit_report_id: str):
+        try:
+            # Verify the audit report is valid
+            audit_report = await self.audit_report_service.get_audit_report_async(audit_report_id)
+
+            # Verify the audit report
+            audit_report["status"] = AuditReportStatus.VERIFIED
+            audit_report_update_request = AuditReportUpdateRequest(
+                status=AuditReportStatus.VERIFIED
+            )
+            await self.audit_report_service.update_audit_report_async(audit_report_id, audit_report_update_request)
+
+            # Update the feature status
+            feature_update_request = FeatureUpdateRequest(
+                status=audit_report["status_change_to"]
+            )
+            await self.feature_service.update_feature_async(audit_report["feature_id"], feature_update_request)
+        except Exception as e:
+            raise e

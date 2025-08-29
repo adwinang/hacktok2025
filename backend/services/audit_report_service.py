@@ -44,7 +44,13 @@ class AuditReportService:
 
     async def update_audit_report_async(self, audit_report_id: str, audit_report_update_request: AuditReportUpdateRequest):
         try:
-            await self.audit_report_repository.update_audit_report_async(audit_report_id, audit_report_update_request)
+            # Convert Pydantic model to dict, excluding None values
+            update_data = audit_report_update_request.model_dump(
+                exclude_none=True)
+            # Add updated_at timestamp
+            update_data["updated_at"] = datetime.utcnow()
+
+            await self.audit_report_repository.update_audit_report_async(audit_report_id, update_data)
         except Exception as e:
             raise e
 

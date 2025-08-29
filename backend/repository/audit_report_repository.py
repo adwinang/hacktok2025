@@ -53,8 +53,10 @@ class AuditReportRepositoryAsync:
         try:
             query = {"feature_id": feature_id}
             if status is not None:
-                query["status"] = status
+                query["status"] = status.value
             result = await self.collection.find_one(query)
+            if result:
+                result["id"] = str(result.pop("_id"))
             return result
         except Exception as e:
             print(f"Error getting audit report for feature: {e}")

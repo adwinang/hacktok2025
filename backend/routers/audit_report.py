@@ -67,6 +67,19 @@ async def stream_audit_reports():
             status_code=500, detail=f"Failed to stream audit reports: {str(e)}")
 
 
+@audit_report_router.get("/feature/{feature_id}/pending")
+async def get_pending_audit_report_for_feature(feature_id: str):
+    """
+    Get pending audit report for a feature.
+    """
+    try:
+        audit_report_service = audit_report_router.audit_report_service
+        audit_report = await audit_report_service.get_pending_audit_report_for_feature_async(feature_id)
+        return {"success": True, "audit_report": audit_report}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @audit_report_router.get("/{audit_report_id}")
 async def get_audit_report(audit_report_id: str):
     """
@@ -102,5 +115,18 @@ async def dismiss_audit_report(audit_report_id: str):
         compliance_action_service = audit_report_router.compliance_action_service
         await compliance_action_service.dismiss_audit_report_async(audit_report_id)
         return {"success": True, "message": "Audit report dismissed successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@audit_report_router.post("/{audit_report_id}/verify")
+async def verify_audit_report(audit_report_id: str):
+    """
+    Verify an audit report.
+    """
+    try:
+        compliance_action_service = audit_report_router.compliance_action_service
+        await compliance_action_service.verify_audit_report_async(audit_report_id)
+        return {"success": True, "message": "Audit report verified successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
