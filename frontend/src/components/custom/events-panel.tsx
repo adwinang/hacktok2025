@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { Card } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { AlertTriangle, CheckCircle, Clock, XCircle } from "lucide-react";
@@ -10,6 +10,7 @@ import {
   AuditReportStreamEventSchema,
   AuditReportStatus,
 } from "@/types/audit_report";
+import AuditReportDialog from "./audit-report-dialog";
 
 type AuditReportsState = {
   auditReports: AuditReports;
@@ -87,7 +88,12 @@ function auditReportsReducer(
   }
 }
 
-function AuditReportItem({ report }: { report: AuditReport }) {
+interface AuditReportItemProps {
+  report: AuditReport;
+  onClick: () => void;
+}
+
+function AuditReportItem({ report, onClick }: AuditReportItemProps) {
   const getStatusConfig = (status: AuditReportStatus) => {
     switch (status) {
       case "pending":
@@ -121,7 +127,10 @@ function AuditReportItem({ report }: { report: AuditReport }) {
   const confidencePercentage = Math.round(report.confidence);
 
   return (
-    <div className="flex flex-col items-start rounded-lg p-3 border bg-card hover:bg-accent/50 transition-colors">
+    <div
+      className="flex flex-col items-start rounded-lg p-3 border bg-card hover:bg-accent/50 transition-colors cursor-pointer"
+      onClick={onClick}
+    >
       <div className="flex items-center justify-between w-full mb-2">
         <Badge
           variant={statusConfig.variant}
@@ -164,7 +173,23 @@ export default function EventsPanel() {
     error: null,
   });
 
+  const [selectedReport, setSelectedReport] = useState<AuditReport | null>(
+    null
+  );
+  const [dialogOpen, setDialogOpen] = useState(false);
   const eventSourceRef = useRef<EventSource | null>(null);
+
+  const handleReportClick = (report: AuditReport) => {
+    setSelectedReport(report);
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = (open: boolean) => {
+    setDialogOpen(open);
+    if (!open) {
+      setSelectedReport(null);
+    }
+  };
 
   useEffect(() => {
     dispatch({ type: "LOADING" });
@@ -206,6 +231,13 @@ export default function EventsPanel() {
                 auditReportData: validatedEvent.data.audit_report_data,
               },
             });
+            // Update the selected report if it's currently being viewed
+            if (
+              selectedReport &&
+              selectedReport.id === validatedEvent.data.audit_report_id
+            ) {
+              setSelectedReport(validatedEvent.data.audit_report_data);
+            }
           }
         } else if (validatedEvent.type === "audit_report_deleted") {
           dispatch({
@@ -214,6 +246,13 @@ export default function EventsPanel() {
               auditReportId: validatedEvent.data.audit_report_id,
             },
           });
+          // Close dialog if the selected report was deleted
+          if (
+            selectedReport &&
+            selectedReport.id === validatedEvent.data.audit_report_id
+          ) {
+            setDialogOpen(false);
+          }
         } else if (validatedEvent.type === "error") {
           dispatch({
             type: "ERROR",
@@ -254,43 +293,61 @@ export default function EventsPanel() {
         eventSourceRef.current = null;
       }
     };
-  }, []);
+  }, [selectedReport]);
 
   return (
-    <Card className="w-[420px] flex flex-col p-4 h-full sticky top-4 mt-4 mr-4">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-lg font-bold">Real-time updates</h1>
+    <>
+      <div className="flex flex-col h-[calc(100vh-16px)] w-[420px] sticky top-4 mt-4 mr-4 pb-4">
+        <Card className="flex flex-col h-full w-full p-4">
+          <div className="flex flex-col gap-2 h-full">
+            <h1 className="text-lg font-bold">Real-time updates</h1>
 
-        {state.error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-red-600 text-sm mb-2">Error: {state.error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="px-3 py-1 bg-red-100 text-red-700 rounded text-xs hover:bg-red-200"
-            >
-              Retry
-            </button>
+            {state.error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-red-600 text-sm mb-2">
+                  Error: {state.error}
+                </p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-3 py-1 bg-red-100 text-red-700 rounded text-xs hover:bg-red-200"
+                >
+                  Retry
+                </button>
+              </div>
+            )}
+
+            {state.loading && (
+              <div className="p-3 text-center text-sm text-muted-foreground">
+                Loading audit reports...
+              </div>
+            )}
+
+            {!state.loading &&
+              state.auditReports.length === 0 &&
+              !state.error && (
+                <div className="p-3 text-center text-sm text-muted-foreground">
+                  No audit reports yet
+                </div>
+              )}
+
+            <div className="flex flex-col gap-2 overflow-y-scroll h-full">
+              {state.auditReports.map((report) => (
+                <AuditReportItem
+                  key={report.id}
+                  report={report}
+                  onClick={() => handleReportClick(report)}
+                />
+              ))}
+            </div>
           </div>
-        )}
-
-        {state.loading && (
-          <div className="p-3 text-center text-sm text-muted-foreground">
-            Loading audit reports...
-          </div>
-        )}
-
-        {!state.loading && state.auditReports.length === 0 && !state.error && (
-          <div className="p-3 text-center text-sm text-muted-foreground">
-            No audit reports yet
-          </div>
-        )}
-
-        <div className="flex flex-col gap-2 max-h-[600px] overflow-y-auto">
-          {state.auditReports.map((report) => (
-            <AuditReportItem key={report.id} report={report} />
-          ))}
-        </div>
+        </Card>
       </div>
-    </Card>
+
+      <AuditReportDialog
+        report={selectedReport}
+        open={dialogOpen}
+        onOpenChange={handleDialogClose}
+      />
+    </>
   );
 }

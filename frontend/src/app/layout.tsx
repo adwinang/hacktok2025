@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Sidenav from "@/components/layout/sidenav";
 import EventsPanel from "@/components/custom/events-panel";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,6 +20,7 @@ export default function RootLayout({
         <Sidenav />
         <main className="flex-1 h-full overflow-auto">{children}</main>
         <EventsPanel />
+        <Toaster />
       </body>
     </html>
   );
