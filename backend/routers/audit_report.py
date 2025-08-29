@@ -1,7 +1,21 @@
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import StreamingResponse
 from model.audit_report import AuditReportCreateRequest
 
 audit_report_router = APIRouter(prefix="/audit-report", tags=["audit-report"])
+
+
+@audit_report_router.get("/")
+async def get_audit_reports():
+    """
+    Get all audit reports.
+    """
+    try:
+        audit_report_service = audit_report_router.audit_report_service
+        audit_reports = await audit_report_service.get_audit_reports_async()
+        return {"success": True, "audit_reports": audit_reports}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @audit_report_router.post("/")
@@ -15,6 +29,42 @@ async def create_audit_report(request: AuditReportCreateRequest):
         return {"success": True, "audit_report_id": audit_report_id}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@audit_report_router.get("/stream")
+async def stream_audit_reports():
+    """
+    Stream audit reports in real-time using Server-Sent Events (SSE).
+
+    This endpoint:
+    1. First sends all existing audit reports as initial data
+    2. Then streams real-time updates as new audit reports are added
+
+    The response format follows SSE standards with proper headers.
+    """
+    try:
+        audit_report_service = audit_report_router.audit_report_service
+
+        async def generate_sse_stream():
+            async for sse_message in audit_report_service.stream_audit_reports_async():
+                yield sse_message
+
+        return StreamingResponse(
+            generate_sse_stream(),
+            media_type="text/event-stream",
+            headers={
+                'Cache-Control': 'no-cache',
+                'Connection': 'keep-alive',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, HEAD',
+                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Max-Age': '3600'
+            }
+        )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to stream audit reports: {str(e)}")
 
 
 @audit_report_router.get("/{audit_report_id}")
