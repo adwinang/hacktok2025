@@ -46,6 +46,19 @@ async def delete_source(source_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@source_router.get("/count")
+async def get_source_count():
+    """
+    Retrieve the count of sources.
+    """
+    try:
+        source_service = source_router.source_service
+        count = await source_service.get_source_count_async()
+        return {"success": True, "count": count}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @source_router.get("/contents")
 async def get_source_contents():
     """

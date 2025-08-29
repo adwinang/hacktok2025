@@ -1,0 +1,105 @@
+{
+  "name": "Refresh sources",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "id": "0c659116-1067-405e-bf9c-7f4ae50b3c1c",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://backend:5000/sources/refresh-all",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [208, 0],
+      "id": "c3b985f8-9701-421f-a707-d54d01020670",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://backend:5000/compliance/analyze-sources",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "source_ids",
+              "value": "={{ $json.source_ids }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [624, 0],
+      "id": "ef747bb9-62ea-405f-a93d-1beb63793f88",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the input data\nconst inputData = $input.all();\n\n// Extract all source_ids from the data\nconst sourceIds = [];\n\ninputData.forEach(item => {\n  if (item.json && item.json.source_contents_updates) {\n    item.json.source_contents_updates.forEach(update => {\n      if (update.source_id) {\n        sourceIds.push(update.source_id);\n      }\n    });\n  }\n});\n\n// Return the result\nreturn [{ json: { source_ids: sourceIds } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [416, 0],
+      "id": "022c68fc-b3c9-446b-b8e2-c7bfc040471e",
+      "name": "Code"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [[]]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fe0b0d89-bfa8-4bca-a360-fe5aca32b728",
+  "meta": {
+    "instanceId": "aa185711fee195e154f5c6ed8ce9df3bdd2c595bc9cb7757dd4ff20de97c0cf8"
+  },
+  "id": "klRimV38EyVjULup",
+  "tags": []
+}

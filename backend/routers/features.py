@@ -122,6 +122,19 @@ async def update_feature(feature_id: str, update_request: FeatureUpdateRequest):
             status_code=500, detail=f"Failed to update feature: {str(e)}")
 
 
+@feature_router.get("/count")
+async def get_feature_count():
+    """
+    Retrieve the count of features.
+    """
+    try:
+        feature_service = feature_router.feature_service
+        count = await feature_service.get_feature_count_async()
+        return {"success": True, "count": count}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @feature_router.get("/stream")
 async def stream_features():
     """

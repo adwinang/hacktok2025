@@ -35,3 +35,9 @@ class SourceService:
             return await self.source_repository.remove_source(source_id)
         except Exception as e:
             raise e
+
+    async def get_source_count_async(self) -> int:
+        try:
+            return await self.source_repository.get_source_count()
+        except Exception as e:
+            raise e

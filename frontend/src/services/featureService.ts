@@ -22,3 +22,23 @@ export async function getFeatures(): Promise<Features> {
     return [];
   }
 }
+
+export async function getFeatureCount(): Promise<number> {
+  try {
+    const feature_count_response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/features/count`
+    );
+
+    if (!feature_count_response.ok) {
+      throw new Error(
+        `Failed to fetch feature count: ${feature_count_response.status}`
+      );
+    }
+
+    const feature_count_data = await feature_count_response.json();
+    return feature_count_data.count;
+  } catch (error: unknown) {
+    console.error("Error fetching feature count:", error);
+    return 0;
+  }
+}

@@ -104,3 +104,9 @@ class FeatureService:
                 }
             }
             yield f"data: {json.dumps(error_message)}\n\n"
+
+    async def get_feature_count_async(self) -> int:
+        try:
+            return await self.feature_repository.get_feature_count()
+        except Exception as e:
+            raise e
