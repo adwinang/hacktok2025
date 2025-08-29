@@ -1,11 +1,14 @@
 import { ChartPieLabel } from "@/components/custom/pie-chart";
-import { getFeatures } from "@/services/featureService";
+import { getFeatureCount, getFeatures } from "@/services/featureService";
 import FeaturesTable from "@/components/custom/features-table";
 import { transformFeaturesToChart } from "@/helpers/transformToChart";
 import { NumberCard } from "@/components/custom/number-card";
+import { getSourceCount } from "@/services/sourceService";
 
 export default async function Home() {
   const features = await getFeatures();
+  const feature_count = await getFeatureCount();
+  const source_count = await getSourceCount();
 
   const { data, dataKey, nameKey, chartConfig } =
     transformFeaturesToChart(features);
@@ -17,14 +20,14 @@ export default async function Home() {
           <NumberCard
             title="Total Sources"
             description="Total number of sources"
-            value={100}
+            value={source_count}
             footerText="Total sources"
             subFooterText="Total sources"
           />
           <NumberCard
             title="Total Features"
             description="Total number of features"
-            value={1412}
+            value={feature_count}
             footerText="Total features"
             subFooterText="Total features"
           />

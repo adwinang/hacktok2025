@@ -82,3 +82,10 @@ class FeatureRepositoryAsync:
         except Exception as e:
             print(f"Error updating feature: {e}")
             return False
+
+    async def get_feature_count(self) -> int:
+        try:
+            return await self.collection.count_documents({})
+        except Exception as e:
+            print(f"Error getting feature count: {e}")
+            return 0

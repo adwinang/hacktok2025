@@ -46,3 +46,10 @@ class SourceRepositoryAsync:
         except Exception as e:
             print(f"Error removing source: {e}")
             return False
+
+    async def get_source_count(self) -> int:
+        try:
+            return await self.collection.count_documents({})
+        except Exception as e:
+            print(f"Error getting source count: {e}")
+            return 0
