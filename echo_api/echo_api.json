@@ -2643,7 +2643,7 @@
       "status": 1,
       "is_changed": -1,
       "is_create": -1,
-      "method": "GET",
+      "method": "POST",
       "url": "http://localhost:5000/compliance/analyze-sources",
       "request": {
         "auth": {
@@ -2863,7 +2863,7 @@
       "status": 1,
       "is_changed": -1,
       "is_create": -1,
-      "method": "GET",
+      "method": "POST",
       "url": "http://localhost:5000/compliance/analyze-feature",
       "request": {
         "auth": {

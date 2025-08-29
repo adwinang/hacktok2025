@@ -1,3 +1,4 @@
+from typing import List
 from agents.compliance_analyzer_agent import ComplianceAnalyzerAgent
 from services.source_service import SourceService
 from services.source_content_service import SourceContentService
@@ -12,11 +13,11 @@ class ComplianceAnalysisService:
         self.compliance_analyzer_agent = compliance_analyzer_agent
 
     # Priority 1
-    def analyze_sources_impact(self):
+    async def analyze_sources_impact_async(self, source_ids: List[str]):
         # TODO: Implement
         pass
 
     # Priority 2
-    def analyze_feature_impact(self):
+    async def analyze_feature_impact_async(self, feature_id: str):
         # TODO: Implement
         pass
