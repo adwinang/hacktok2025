@@ -4,6 +4,7 @@ import FeaturesTable from "@/components/custom/features-table";
 import { transformFeaturesToChart } from "@/helpers/transformToChart";
 import { NumberCard } from "@/components/custom/number-card";
 import { getSourceCount } from "@/services/sourceService";
+import DynamicFeaturesTable from "@/components/custom/dynamic-features-table";
 
 export default async function Home() {
   const features = await getFeatures();
@@ -42,7 +43,8 @@ export default async function Home() {
             chartConfig={chartConfig}
           />
         </div>
-        <FeaturesTable data={features} />
+        {/* <FeaturesTable data={features} /> */}
+        <DynamicFeaturesTable />
       </div>
     </main>
   );
