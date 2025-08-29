@@ -40,7 +40,10 @@ class KnowledgeBaseService:
 
         for source in sources:
             # Scrape the latest source content for each source url
-            req = requests.get(source.source_url)
+            headers = {
+                "User-Agent": "Mozilla/5.0 (compatible; KnowledgeBaseBot/1.0; +https://aegir.co/bot)"
+            }
+            req = requests.get(source.source_url, headers=headers)
             doc = Document(req.text)
             actual_title = doc.title()
             actual_content = doc.summary()
@@ -55,11 +58,11 @@ class KnowledgeBaseService:
                 current_content = existing_source_content.content
 
                 # If the two are the same, then skip
+                # TODO: Extra, implement levenshtein distance to check if the two are similar
+                # Proceed if the two do not have 97% similarity
                 if actual_title == current_title and actual_content == current_content:
-                    print("called here")
                     continue
 
-            print("called here 2")
             # Create a new source content
             await self.source_content_service.create_source_content_async(
                 SourceContentCreateRequest(
