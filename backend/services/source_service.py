@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 from model.source import Source, SourceCreateRequest
 from repository.source_repository import SourceRepositoryAsync
 
@@ -10,6 +11,17 @@ class SourceService:
     async def get_sources_async(self) -> list[Source]:
         try:
             sources_data = await self.source_repository.get_sources()
+            sources = []
+            for source_data in sources_data:
+                source = Source(**source_data)
+                sources.append(source)
+            return sources
+        except Exception as e:
+            raise e
+
+    async def get_sources_via_ids_async(self, source_ids: List[str]) -> list[Source]:
+        try:
+            sources_data = await self.source_repository.get_sources_via_ids(source_ids)
             sources = []
             for source_data in sources_data:
                 source = Source(**source_data)

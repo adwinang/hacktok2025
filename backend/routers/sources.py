@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import APIRouter, HTTPException
-from model.source import Source, SourceCreateRequest
+from model.source import Source, SourceCreateRequest, SourceIdsRequest
 from model.source_content import SourceContentCreateRequest
 
 
@@ -15,6 +15,19 @@ async def get_sources():
     try:
         source_service = source_router.source_service
         sources = await source_service.get_sources_async()
+        return {"success": True, "sources": sources}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@source_router.post("/ids")
+async def get_sources_via_ids(source_ids_request: SourceIdsRequest):
+    """
+    Retrieve sources by IDs.
+    """
+    try:
+        source_service = source_router.source_service
+        sources = await source_service.get_sources_via_ids_async(source_ids_request.source_ids)
         return {"success": True, "sources": sources}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -1,4 +1,5 @@
 import os
+from typing import List
 import dotenv
 from bson.objectid import ObjectId
 from pymongo import AsyncMongoClient
@@ -15,6 +16,13 @@ class SourceRepositoryAsync:
 
     async def get_sources(self) -> list[dict]:
         sources = await self.collection.find().to_list(length=None)
+        for source in sources:
+            if "_id" in source:
+                source["id"] = str(source.pop("_id"))
+        return sources
+
+    async def get_sources_via_ids(self, source_ids: List[str]) -> list[dict]:
+        sources = await self.collection.find({"_id": {"$in": [ObjectId(source_id) for source_id in source_ids]}}).to_list(length=None)
         for source in sources:
             if "_id" in source:
                 source["id"] = str(source.pop("_id"))

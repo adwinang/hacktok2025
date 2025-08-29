@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from pydantic import BaseModel, HttpUrl
 from datetime import datetime
 
@@ -12,3 +12,7 @@ class Source(BaseModel):
 
 class SourceCreateRequest(BaseModel):
     source_url: HttpUrl
+
+
+class SourceIdsRequest(BaseModel):
+    source_ids: List[str]
