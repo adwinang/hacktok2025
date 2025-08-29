@@ -18,7 +18,7 @@ export default function EventsPanel() {
   ];
 
   return (
-    <Card className="w-96 flex flex-col p-4 h-full sticky top-4 mt-4 mr-4">
+    <Card className="w-[480px] flex flex-col p-4 h-full sticky top-4 mt-4 mr-4">
       <div className="flex flex-col gap-2">
         <h1 className="text-lg font-bold">Real-time updates</h1>
         {events.map((event) => (
