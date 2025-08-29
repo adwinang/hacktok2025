@@ -5,7 +5,7 @@ This module contains routes for compliance analysis.
 """
 
 from fastapi import APIRouter, HTTPException
-from backend.model.analysis_requests import AnalyzeSourcesRequest, AnalyzeFeatureRequest
+from model.analysis_requests import AnalyzeSourcesRequest, AnalyzeFeatureRequest
 
 # Create router for health-related routes
 compliance_router = APIRouter(prefix="/compliance", tags=["compliance"])
