@@ -5,6 +5,7 @@ export const FeatureSchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string(),
+  tags: z.array(z.string()),
   status: z.enum(["pending", "pass", "warning", "critical"]),
   created_at: DateSchema,
   updated_at: DateSchema.nullable(),

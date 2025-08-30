@@ -2,11 +2,13 @@ from datetime import datetime
 from typing import List
 from model.source import Source, SourceCreateRequest
 from repository.source_repository import SourceRepositoryAsync
+from agents.source_tagging_agent import SourceTaggingAgent
 
 
 class SourceService:
-    def __init__(self, source_repository: SourceRepositoryAsync):
+    def __init__(self, source_repository: SourceRepositoryAsync, source_tagging_agent: SourceTaggingAgent):
         self.source_repository = source_repository
+        self.source_tagging_agent = source_tagging_agent
 
     async def get_sources_async(self) -> list[Source]:
         try:
@@ -32,6 +34,7 @@ class SourceService:
 
     async def create_source_async(self, source_request: SourceCreateRequest) -> str:
         try:
+            # TODO: Add a pre-processing layer to add more metadata to the source
             source = Source(
                 source_url=str(source_request.source_url),
                 created_at=datetime.utcnow(),

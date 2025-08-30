@@ -16,6 +16,8 @@ from services.audit_report_service import AuditReportService
 from services.compliance_action_service import ComplianceActionService
 
 from agents.compliance_analyzer_agent import ComplianceAnalyzerAgent
+from agents.feature_tagging_agent import FeatureTaggingAgent
+from agents.source_tagging_agent import SourceTaggingAgent
 
 from dotenv import load_dotenv
 
@@ -26,6 +28,8 @@ accessible_endpoints = [
     "http://127.0.0.1:5000",  # Backend
     "http://localhost:5000",  # Backend
     "http://localhost:3000",  # Frontend
+    "http://localhost:3001",  # Frontend
+    "http://localhost:3002",  # Frontend
 ]
 
 
@@ -66,14 +70,16 @@ def create_asgi_app():
         collection_name="features"
     )
 
-    feature_service = FeatureService(feature_repository=feature_repository)
+    feature_service = FeatureService(
+        feature_repository=feature_repository, feature_tagging_agent=FeatureTaggingAgent())
 
     source_repository = SourceRepositoryAsync(
         db_name="hacktok",
         collection_name="sources"
     )
 
-    source_service = SourceService(source_repository=source_repository)
+    source_service = SourceService(
+        source_repository=source_repository, source_tagging_agent=SourceTaggingAgent())
 
     source_content_repository = SourceContentRepositoryAsync(
         db_name="hacktok",

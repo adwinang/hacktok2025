@@ -3,11 +3,13 @@ from typing import AsyncGenerator
 from model.feature import Feature, FeatureCreateRequest, FeatureUpdateRequest, FeatureStatus
 from repository.feature_repository import FeatureRepositoryAsync
 from datetime import datetime
+from agents.feature_tagging_agent import FeatureTaggingAgent
 
 
 class FeatureService:
-    def __init__(self, feature_repository: FeatureRepositoryAsync):
+    def __init__(self, feature_repository: FeatureRepositoryAsync, feature_tagging_agent: FeatureTaggingAgent):
         self.feature_repository = feature_repository
+        self.feature_tagging_agent = feature_tagging_agent
 
     async def get_features_async(self) -> list[Feature]:
         try:
@@ -29,10 +31,12 @@ class FeatureService:
 
     async def create_feature_async(self, feature_request: FeatureCreateRequest) -> str:
         try:
-            # TODO: Add a pre-processing layer to add more metadata to the feature
+            # Generate feature tags using the tagging agent
+            feature_tags_response = await self.feature_tagging_agent.generate_feature_tags(feature_request)
             feature = Feature(
                 name=feature_request.name,
                 description=feature_request.description,
+                tags=feature_tags_response.tags,
                 status=FeatureStatus.PENDING,
                 created_at=datetime.utcnow(),
                 updated_at=None

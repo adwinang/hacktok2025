@@ -1,7 +1,7 @@
 from pydantic import BaseModel, HttpUrl, Field
 from datetime import datetime
 from enum import Enum
-from typing import Optional
+from typing import Optional, List
 
 
 class FeatureStatus(str, Enum):
@@ -15,6 +15,7 @@ class Feature(BaseModel):
     id: Optional[str] = None
     name: str
     description: str
+    tags: List[str] = []
     status: FeatureStatus = FeatureStatus.PENDING
     created_at: datetime
     updated_at: Optional[datetime] = None
