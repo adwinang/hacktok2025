@@ -14,9 +14,9 @@ type FeaturesAction =
   | { type: "LOADING" }
   | { type: "SET_INITIAL_FEATURES"; payload: Features }
   | {
-      type: "UPDATE_FEATURE";
-      payload: { featureId: string; featureData: Feature };
-    }
+    type: "UPDATE_FEATURE";
+    payload: { featureId: string; featureData: Feature };
+  }
   | { type: "ERROR"; payload: string }
   | { type: "RESET_ERROR" };
 
@@ -111,9 +111,8 @@ export default function DynamicFeaturesTable() {
         console.error("Error parsing or validating event data:", error);
         dispatch({
           type: "ERROR",
-          payload: `Failed to parse stream event: ${
-            error instanceof Error ? error.message : "Unknown error"
-          }`,
+          payload: `Failed to parse stream event: ${error instanceof Error ? error.message : "Unknown error"
+            }`,
         });
       }
     };

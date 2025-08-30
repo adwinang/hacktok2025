@@ -22,12 +22,24 @@ export function DataTableToolbar<TData>({
   const nameColumn = allColumns.find((c) => c.id === "name");
   const urlColumn = allColumns.find((c) => c.id === "source_url");
   const statusColumn = allColumns.find((c) => c.id === "status");
+  const tagsColumn = allColumns.find((c) => c.id === "tags");
   const filterableColumn = nameColumn ?? urlColumn;
   const placeholder = nameColumn
     ? "Filter by name"
     : urlColumn
       ? "Filter by URL"
       : "Search";
+
+  // Build tag options dynamically from the table data
+  const tagOptions = Array.from(
+    new Set(
+      table
+        .getPreFilteredRowModel()
+        .flatRows.flatMap((row) =>
+          ((row.getValue("tags") as string[] | undefined) ?? []).filter(Boolean)
+        )
+    )
+  ).map((tag) => ({ label: tag, value: tag }));
 
   return (
     <div className="flex items-center justify-between w-full overflow-x-scroll pb-4">
@@ -45,6 +57,13 @@ export function DataTableToolbar<TData>({
             column={statusColumn}
             title="Status"
             options={statuses}
+          />
+        )}
+        {tagsColumn && tagOptions.length > 0 && (
+          <DataTableFacetedFilter
+            column={tagsColumn}
+            title="Tags"
+            options={tagOptions}
           />
         )}
         {isFiltered && (

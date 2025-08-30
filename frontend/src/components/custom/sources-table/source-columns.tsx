@@ -49,6 +49,12 @@ export const columns: ColumnDef<Source>[] = [
         size: 220,
         minSize: 220,
         maxSize: 220,
+        filterFn: (row, id, value) => {
+            const selected: string[] = (value as string[]) ?? [];
+            if (selected.length === 0) return true;
+            const rowTags = (row.getValue(id) as string[] | null) ?? [];
+            return selected.some((tag) => rowTags.includes(tag));
+        },
     },
     {
         accessorKey: "created_at",

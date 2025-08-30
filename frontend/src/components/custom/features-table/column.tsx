@@ -56,6 +56,38 @@ export const columns: ColumnDef<Feature>[] = [
     maxSize: undefined,
   },
   {
+    accessorKey: "tags",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Tags" />
+    ),
+    cell: ({ row }) => {
+      const tags = row.getValue("tags") as string[] | undefined;
+      return (
+        <div className="flex flex-wrap gap-1.5">
+          {tags && tags.length > 0 ? (
+            tags.map((tag) => (
+              <Badge key={`${row.id}-${tag}`} variant="secondary">
+                {tag}
+              </Badge>
+            ))
+          ) : (
+            <span className="text-xs text-muted-foreground">—</span>
+          )}
+        </div>
+      );
+    },
+    enableSorting: false,
+    size: 200,
+    minSize: 160,
+    maxSize: 280,
+    filterFn: (row, id, value) => {
+      const selected = (value as string[]) ?? [];
+      if (selected.length === 0) return true;
+      const rowTags = (row.getValue(id) as string[] | undefined) ?? [];
+      return selected.some((tag) => rowTags.includes(tag));
+    },
+  },
+  {
     accessorKey: "created_at",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Created" />

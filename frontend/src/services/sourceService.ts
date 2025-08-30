@@ -4,6 +4,7 @@ export async function getSourceCount(): Promise<number> {
       `${process.env.NEXT_PUBLIC_API_URL}/sources/count`
     );
 
+
     if (!source_count_response.ok) {
       throw new Error(
         `Failed to fetch source count: ${source_count_response.status}`
