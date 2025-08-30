@@ -12,6 +12,7 @@ from .sources import source_router
 from .chat import chat_router
 from .compliance import compliance_router
 from .audit_report import audit_report_router
+from .scripts import scripts_router
 
 
 def register_routers(app: FastAPI, **services):
@@ -36,16 +37,23 @@ def register_routers(app: FastAPI, **services):
     app.include_router(source_router)
 
     # Register compliance routes
-    compliance_router.compliance_analysis_service = services["compliance_analysis_service"]
+    compliance_router.compliance_analysis_service = services[
+        "compliance_analysis_service"
+    ]
     app.include_router(compliance_router)
 
     # Register audit report routes
     audit_report_router.audit_report_service = services["audit_report_service"]
-    audit_report_router.compliance_action_service = services["compliance_action_service"]
+    audit_report_router.compliance_action_service = services[
+        "compliance_action_service"
+    ]
     app.include_router(audit_report_router)
 
     # Register chat routes with dependencies
     app.include_router(chat_router)
 
+    # Register scripts routes
+    app.include_router(scripts_router)
 
-__all__ = ['register_routers']
+
+__all__ = ["register_routers"]
