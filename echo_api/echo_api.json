@@ -647,7 +647,7 @@
       "target_id": "30154a5cb90005",
       "parent_id": "2fef492936d006",
       "target_type": "api",
-      "name": "Create feature",
+      "name": "Add feature",
       "sort": 2,
       "version": 0,
       "mark_id": "",
@@ -783,7 +783,7 @@
         "body": {
           "mode": "json",
           "parameter": [],
-          "raw": "{\n  \"name\": \"Feature Name\",\n  \"description\": \"Feature Description\"\n}",
+          "raw": "{\n  \"name\": \"Unified retention control via DRT & CDS\",\n  \"description\": \"Introduce a data retention feature using DRT thresholds, ensuring automatic log deletion across all regions. CDS will continuously audit retention violations, triggering EchoTrace as necessary. Spanner logic ensures all platform modules comply uniformly.\"\n}",
           "raw_parameter": [],
           "raw_schema": {
             "type": "object"
@@ -1516,7 +1516,7 @@
       "parent_id": "2fef492936d006",
       "target_type": "api",
       "name": "Add source",
-      "sort": 7,
+      "sort": 8,
       "version": 0,
       "mark_id": "",
       "status": 1,
@@ -1736,7 +1736,7 @@
       "parent_id": "2fef492936d006",
       "target_type": "api",
       "name": "Delete source",
-      "sort": 8,
+      "sort": 9,
       "version": 0,
       "mark_id": "",
       "status": 1,
@@ -1956,7 +1956,7 @@
       "parent_id": "2fef492936d006",
       "target_type": "api",
       "name": "Get source content",
-      "sort": 9,
+      "sort": 10,
       "version": 0,
       "mark_id": "",
       "status": 1,
@@ -2186,7 +2186,7 @@
       "parent_id": "2fef492936d006",
       "target_type": "api",
       "name": "Add source content",
-      "sort": 10,
+      "sort": 11,
       "version": 0,
       "mark_id": "",
       "status": 1,
@@ -2417,7 +2417,7 @@
       "parent_id": "2fef492936d006",
       "target_type": "api",
       "name": "Check sources",
-      "sort": 11,
+      "sort": 12,
       "version": 0,
       "mark_id": "",
       "status": 1,
@@ -2637,7 +2637,7 @@
       "parent_id": "2fef492936d006",
       "target_type": "api",
       "name": "Analyze sources",
-      "sort": 13,
+      "sort": 14,
       "version": 0,
       "mark_id": "",
       "status": 1,
@@ -2857,7 +2857,7 @@
       "parent_id": "2fef492936d006",
       "target_type": "api",
       "name": "Analyze feature",
-      "sort": 14,
+      "sort": 15,
       "version": 0,
       "mark_id": "",
       "status": 1,
@@ -3077,7 +3077,7 @@
       "parent_id": "2fef492936d006",
       "target_type": "api",
       "name": "Refresh sources contents",
-      "sort": 12,
+      "sort": 13,
       "version": 0,
       "mark_id": "",
       "status": 1,
@@ -3213,6 +3213,1974 @@
           "mode": "none",
           "parameter": [],
           "raw": "",
+          "raw_parameter": [],
+          "raw_schema": {
+            "type": "object"
+          },
+          "binary": null
+        },
+        "pre_tasks": [],
+        "post_tasks": [],
+        "header": {
+          "parameter": []
+        },
+        "query": {
+          "parameter": [],
+          "query_add_equal": 1
+        },
+        "cookie": {
+          "parameter": []
+        },
+        "restful": {
+          "parameter": []
+        }
+      },
+      "response": {
+        "is_check_result": 1,
+        "example": [
+          {
+            "example_id": "1",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Success",
+              "is_default": 1,
+              "code": "200",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "example_id": "2",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Failure",
+              "is_default": -1,
+              "code": "404",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        ]
+      },
+      "description": "",
+      "tags": [],
+      "ai_expect_enable": -1,
+      "is_check_result": 1,
+      "is_socket": 1,
+      "is_locked": -1,
+      "is_force": -1,
+      "attribute_info": {},
+      "protocol": "http/1.1",
+      "ai_expect": {
+        "list": [],
+        "none_math_expect_id": ""
+      },
+      "is_deleted": -1,
+      "is_conflicted": -1,
+      "vscode_version": "1.7.12"
+    },
+    {
+      "project_id": "",
+      "target_id": "31dd3ed4f7400b",
+      "parent_id": "2fef492936d006",
+      "target_type": "api",
+      "name": "Create audit report",
+      "sort": 16,
+      "version": 0,
+      "mark_id": "",
+      "status": 1,
+      "is_changed": -1,
+      "is_create": -1,
+      "method": "POST",
+      "url": "http://localhost:5000/audit-report",
+      "request": {
+        "auth": {
+          "type": "inherit",
+          "kv": {
+            "key": "",
+            "value": "",
+            "in": "header"
+          },
+          "bearer": {
+            "key": ""
+          },
+          "basic": {
+            "username": "",
+            "password": ""
+          },
+          "digest": {
+            "username": "",
+            "password": "",
+            "realm": "",
+            "nonce": "",
+            "algorithm": "MD5",
+            "qop": "",
+            "nc": "",
+            "cnonce": "",
+            "opaque": "",
+            "disableRetryRequest": false
+          },
+          "oauth1": {
+            "consumerKey": "",
+            "consumerSecret": "",
+            "signatureMethod": "HMAC-SHA1",
+            "addEmptyParamsToSign": true,
+            "includeBodyHash": true,
+            "addParamsToHeader": false,
+            "realm": "",
+            "version": "1.0",
+            "nonce": "",
+            "timestamp": "",
+            "verifier": "",
+            "callback": "",
+            "tokenSecret": "",
+            "token": "",
+            "disableHeaderEncoding": false
+          },
+          "oauth2": {
+            "addTokenTo": "header",
+            "headerPrefix": "Bearer",
+            "access_token": "",
+            "grant_type": "password_credentials",
+            "redirect_uri": "",
+            "authUrl": "",
+            "accessTokenUrl": "",
+            "clientId": "",
+            "clientSecret": "",
+            "username": "",
+            "password": "",
+            "challengeAlgorithm": "S256",
+            "code_verifier": "Bearer",
+            "scope": "",
+            "state": "",
+            "client_authentication": "header",
+            "refreshTokenUrl": "",
+            "authRequestParams": [],
+            "tokenRequestParams": [],
+            "refreshRequestParams": []
+          },
+          "hawk": {
+            "authId": "",
+            "authKey": "",
+            "algorithm": "",
+            "user": "",
+            "nonce": "",
+            "extraData": "",
+            "app": "",
+            "delegation": "",
+            "timestamp": "",
+            "includePayloadHash": false
+          },
+          "awsv4": {
+            "accessKey": "",
+            "secretKey": "",
+            "region": "",
+            "service": "",
+            "sessionToken": "",
+            "addAuthDataToQuery": false
+          },
+          "ntlm": {
+            "username": "",
+            "password": "",
+            "domain": "",
+            "workstation": "",
+            "disableRetryRequest": false
+          },
+          "edgegrid": {
+            "accessToken": "",
+            "clientToken": "",
+            "clientSecret": "",
+            "nonce": "",
+            "timestamp": "",
+            "baseURi": "",
+            "headersToSign": ""
+          },
+          "noauth": {},
+          "jwt": {
+            "addTokenTo": "header",
+            "algorithm": "HS256",
+            "secret": "",
+            "isSecretBase64Encoded": false,
+            "payload": "",
+            "headerPrefix": "Bearer",
+            "queryParamKey": "token",
+            "header": ""
+          },
+          "asap": {
+            "alg": "HS256",
+            "iss": "",
+            "aud": "",
+            "kid": "",
+            "privateKey": "",
+            "sub": "",
+            "claims": "",
+            "exp": ""
+          }
+        },
+        "body": {
+          "mode": "json",
+          "parameter": [],
+          "raw": "{\n    \"feature_id\": \"68b29fca38abb5d5d6e3035b\", \n    \"source_ids\": [\"68b02f14e93fd6bb08376604\"],\n    \"needs_action\": true,\n    \"status_change_to\": \"critical\",\n    \"reason\": \"CCCCalifornia SB976 requires notification restrictions during 12am-6am and 8am-3pm Monday-Friday unless parental consent. Current curfew blocker only covers Utah minors, missing California compliance requirements.\",\n    \"confidence\": \"96\",\n    \"original_status\": \"pass\"\n  }",
+          "raw_parameter": [],
+          "raw_schema": {
+            "type": "object"
+          },
+          "binary": null
+        },
+        "pre_tasks": [],
+        "post_tasks": [],
+        "header": {
+          "parameter": []
+        },
+        "query": {
+          "parameter": [],
+          "query_add_equal": 1
+        },
+        "cookie": {
+          "parameter": []
+        },
+        "restful": {
+          "parameter": []
+        }
+      },
+      "response": {
+        "is_check_result": 1,
+        "example": [
+          {
+            "example_id": "1",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Success",
+              "is_default": 1,
+              "code": "200",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "example_id": "2",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Failure",
+              "is_default": -1,
+              "code": "404",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        ]
+      },
+      "description": "",
+      "tags": [],
+      "ai_expect_enable": -1,
+      "is_check_result": 1,
+      "is_socket": 1,
+      "is_locked": -1,
+      "is_force": -1,
+      "attribute_info": {},
+      "protocol": "http/1.1",
+      "ai_expect": {
+        "list": [],
+        "none_math_expect_id": ""
+      },
+      "is_deleted": -1,
+      "is_conflicted": -1,
+      "vscode_version": "1.7.12"
+    },
+    {
+      "project_id": "",
+      "target_id": "31eb7a11b7400c",
+      "parent_id": "2fef492936d006",
+      "target_type": "api",
+      "name": "Get audit report",
+      "sort": 18,
+      "version": 0,
+      "mark_id": "",
+      "status": 1,
+      "is_changed": -1,
+      "is_create": -1,
+      "method": "GET",
+      "url": "http://localhost:5000/audit-report/68b1f77d7aef5b9eb6ca47b1",
+      "request": {
+        "auth": {
+          "type": "inherit",
+          "kv": {
+            "key": "",
+            "value": "",
+            "in": "header"
+          },
+          "bearer": {
+            "key": ""
+          },
+          "basic": {
+            "username": "",
+            "password": ""
+          },
+          "digest": {
+            "username": "",
+            "password": "",
+            "realm": "",
+            "nonce": "",
+            "algorithm": "MD5",
+            "qop": "",
+            "nc": "",
+            "cnonce": "",
+            "opaque": "",
+            "disableRetryRequest": false
+          },
+          "oauth1": {
+            "consumerKey": "",
+            "consumerSecret": "",
+            "signatureMethod": "HMAC-SHA1",
+            "addEmptyParamsToSign": true,
+            "includeBodyHash": true,
+            "addParamsToHeader": false,
+            "realm": "",
+            "version": "1.0",
+            "nonce": "",
+            "timestamp": "",
+            "verifier": "",
+            "callback": "",
+            "tokenSecret": "",
+            "token": "",
+            "disableHeaderEncoding": false
+          },
+          "oauth2": {
+            "addTokenTo": "header",
+            "headerPrefix": "Bearer",
+            "access_token": "",
+            "grant_type": "password_credentials",
+            "redirect_uri": "",
+            "authUrl": "",
+            "accessTokenUrl": "",
+            "clientId": "",
+            "clientSecret": "",
+            "username": "",
+            "password": "",
+            "challengeAlgorithm": "S256",
+            "code_verifier": "Bearer",
+            "scope": "",
+            "state": "",
+            "client_authentication": "header",
+            "refreshTokenUrl": "",
+            "authRequestParams": [],
+            "tokenRequestParams": [],
+            "refreshRequestParams": []
+          },
+          "hawk": {
+            "authId": "",
+            "authKey": "",
+            "algorithm": "",
+            "user": "",
+            "nonce": "",
+            "extraData": "",
+            "app": "",
+            "delegation": "",
+            "timestamp": "",
+            "includePayloadHash": false
+          },
+          "awsv4": {
+            "accessKey": "",
+            "secretKey": "",
+            "region": "",
+            "service": "",
+            "sessionToken": "",
+            "addAuthDataToQuery": false
+          },
+          "ntlm": {
+            "username": "",
+            "password": "",
+            "domain": "",
+            "workstation": "",
+            "disableRetryRequest": false
+          },
+          "edgegrid": {
+            "accessToken": "",
+            "clientToken": "",
+            "clientSecret": "",
+            "nonce": "",
+            "timestamp": "",
+            "baseURi": "",
+            "headersToSign": ""
+          },
+          "noauth": {},
+          "jwt": {
+            "addTokenTo": "header",
+            "algorithm": "HS256",
+            "secret": "",
+            "isSecretBase64Encoded": false,
+            "payload": "",
+            "headerPrefix": "Bearer",
+            "queryParamKey": "token",
+            "header": ""
+          },
+          "asap": {
+            "alg": "HS256",
+            "iss": "",
+            "aud": "",
+            "kid": "",
+            "privateKey": "",
+            "sub": "",
+            "claims": "",
+            "exp": ""
+          }
+        },
+        "body": {
+          "mode": "none",
+          "parameter": [],
+          "raw": "",
+          "raw_parameter": [],
+          "raw_schema": {
+            "type": "object"
+          },
+          "binary": null
+        },
+        "pre_tasks": [],
+        "post_tasks": [],
+        "header": {
+          "parameter": []
+        },
+        "query": {
+          "parameter": [],
+          "query_add_equal": 1
+        },
+        "cookie": {
+          "parameter": []
+        },
+        "restful": {
+          "parameter": []
+        }
+      },
+      "response": {
+        "is_check_result": 1,
+        "example": [
+          {
+            "example_id": "1",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Success",
+              "is_default": 1,
+              "code": "200",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "example_id": "2",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Failure",
+              "is_default": -1,
+              "code": "404",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        ]
+      },
+      "description": "",
+      "tags": [],
+      "ai_expect_enable": -1,
+      "is_check_result": 1,
+      "is_socket": 1,
+      "is_locked": -1,
+      "is_force": -1,
+      "attribute_info": {},
+      "protocol": "http/1.1",
+      "ai_expect": {
+        "list": [],
+        "none_math_expect_id": ""
+      },
+      "is_deleted": -1,
+      "is_conflicted": -1,
+      "vscode_version": "1.7.12"
+    },
+    {
+      "project_id": "",
+      "target_id": "31ebe03677400d",
+      "parent_id": "2fef492936d006",
+      "target_type": "api",
+      "name": "Compliance action",
+      "sort": 20,
+      "version": 0,
+      "mark_id": "",
+      "status": 1,
+      "is_changed": -1,
+      "is_create": -1,
+      "method": "POST",
+      "url": "http://localhost:5000/audit-report/68b1f77d7aef5b9eb6ca47b1/action",
+      "request": {
+        "auth": {
+          "type": "inherit",
+          "kv": {
+            "key": "",
+            "value": "",
+            "in": "header"
+          },
+          "bearer": {
+            "key": ""
+          },
+          "basic": {
+            "username": "",
+            "password": ""
+          },
+          "digest": {
+            "username": "",
+            "password": "",
+            "realm": "",
+            "nonce": "",
+            "algorithm": "MD5",
+            "qop": "",
+            "nc": "",
+            "cnonce": "",
+            "opaque": "",
+            "disableRetryRequest": false
+          },
+          "oauth1": {
+            "consumerKey": "",
+            "consumerSecret": "",
+            "signatureMethod": "HMAC-SHA1",
+            "addEmptyParamsToSign": true,
+            "includeBodyHash": true,
+            "addParamsToHeader": false,
+            "realm": "",
+            "version": "1.0",
+            "nonce": "",
+            "timestamp": "",
+            "verifier": "",
+            "callback": "",
+            "tokenSecret": "",
+            "token": "",
+            "disableHeaderEncoding": false
+          },
+          "oauth2": {
+            "addTokenTo": "header",
+            "headerPrefix": "Bearer",
+            "access_token": "",
+            "grant_type": "password_credentials",
+            "redirect_uri": "",
+            "authUrl": "",
+            "accessTokenUrl": "",
+            "clientId": "",
+            "clientSecret": "",
+            "username": "",
+            "password": "",
+            "challengeAlgorithm": "S256",
+            "code_verifier": "Bearer",
+            "scope": "",
+            "state": "",
+            "client_authentication": "header",
+            "refreshTokenUrl": "",
+            "authRequestParams": [],
+            "tokenRequestParams": [],
+            "refreshRequestParams": []
+          },
+          "hawk": {
+            "authId": "",
+            "authKey": "",
+            "algorithm": "",
+            "user": "",
+            "nonce": "",
+            "extraData": "",
+            "app": "",
+            "delegation": "",
+            "timestamp": "",
+            "includePayloadHash": false
+          },
+          "awsv4": {
+            "accessKey": "",
+            "secretKey": "",
+            "region": "",
+            "service": "",
+            "sessionToken": "",
+            "addAuthDataToQuery": false
+          },
+          "ntlm": {
+            "username": "",
+            "password": "",
+            "domain": "",
+            "workstation": "",
+            "disableRetryRequest": false
+          },
+          "edgegrid": {
+            "accessToken": "",
+            "clientToken": "",
+            "clientSecret": "",
+            "nonce": "",
+            "timestamp": "",
+            "baseURi": "",
+            "headersToSign": ""
+          },
+          "noauth": {},
+          "jwt": {
+            "addTokenTo": "header",
+            "algorithm": "HS256",
+            "secret": "",
+            "isSecretBase64Encoded": false,
+            "payload": "",
+            "headerPrefix": "Bearer",
+            "queryParamKey": "token",
+            "header": ""
+          },
+          "asap": {
+            "alg": "HS256",
+            "iss": "",
+            "aud": "",
+            "kid": "",
+            "privateKey": "",
+            "sub": "",
+            "claims": "",
+            "exp": ""
+          }
+        },
+        "body": {
+          "mode": "json",
+          "parameter": [],
+          "raw": "",
+          "raw_parameter": [],
+          "raw_schema": {
+            "type": "object"
+          },
+          "binary": null
+        },
+        "pre_tasks": [],
+        "post_tasks": [],
+        "header": {
+          "parameter": []
+        },
+        "query": {
+          "parameter": [],
+          "query_add_equal": 1
+        },
+        "cookie": {
+          "parameter": []
+        },
+        "restful": {
+          "parameter": []
+        }
+      },
+      "response": {
+        "is_check_result": 1,
+        "example": [
+          {
+            "example_id": "1",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Success",
+              "is_default": 1,
+              "code": "200",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "example_id": "2",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Failure",
+              "is_default": -1,
+              "code": "404",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        ]
+      },
+      "description": "",
+      "tags": [],
+      "ai_expect_enable": -1,
+      "is_check_result": 1,
+      "is_socket": 1,
+      "is_locked": -1,
+      "is_force": -1,
+      "attribute_info": {},
+      "protocol": "http/1.1",
+      "ai_expect": {
+        "list": [],
+        "none_math_expect_id": ""
+      },
+      "is_deleted": -1,
+      "is_conflicted": -1,
+      "vscode_version": "1.7.12"
+    },
+    {
+      "project_id": "",
+      "target_id": "31f0a857f7400e",
+      "parent_id": "2fef492936d006",
+      "target_type": "api",
+      "name": "Compliance action dismiss",
+      "sort": 22,
+      "version": 0,
+      "mark_id": "",
+      "status": 1,
+      "is_changed": -1,
+      "is_create": -1,
+      "method": "POST",
+      "url": "http://localhost:5000/audit-report/68b1f77d7aef5b9eb6ca47b1/dismiss",
+      "request": {
+        "auth": {
+          "type": "inherit",
+          "kv": {
+            "key": "",
+            "value": "",
+            "in": "header"
+          },
+          "bearer": {
+            "key": ""
+          },
+          "basic": {
+            "username": "",
+            "password": ""
+          },
+          "digest": {
+            "username": "",
+            "password": "",
+            "realm": "",
+            "nonce": "",
+            "algorithm": "MD5",
+            "qop": "",
+            "nc": "",
+            "cnonce": "",
+            "opaque": "",
+            "disableRetryRequest": false
+          },
+          "oauth1": {
+            "consumerKey": "",
+            "consumerSecret": "",
+            "signatureMethod": "HMAC-SHA1",
+            "addEmptyParamsToSign": true,
+            "includeBodyHash": true,
+            "addParamsToHeader": false,
+            "realm": "",
+            "version": "1.0",
+            "nonce": "",
+            "timestamp": "",
+            "verifier": "",
+            "callback": "",
+            "tokenSecret": "",
+            "token": "",
+            "disableHeaderEncoding": false
+          },
+          "oauth2": {
+            "addTokenTo": "header",
+            "headerPrefix": "Bearer",
+            "access_token": "",
+            "grant_type": "password_credentials",
+            "redirect_uri": "",
+            "authUrl": "",
+            "accessTokenUrl": "",
+            "clientId": "",
+            "clientSecret": "",
+            "username": "",
+            "password": "",
+            "challengeAlgorithm": "S256",
+            "code_verifier": "Bearer",
+            "scope": "",
+            "state": "",
+            "client_authentication": "header",
+            "refreshTokenUrl": "",
+            "authRequestParams": [],
+            "tokenRequestParams": [],
+            "refreshRequestParams": []
+          },
+          "hawk": {
+            "authId": "",
+            "authKey": "",
+            "algorithm": "",
+            "user": "",
+            "nonce": "",
+            "extraData": "",
+            "app": "",
+            "delegation": "",
+            "timestamp": "",
+            "includePayloadHash": false
+          },
+          "awsv4": {
+            "accessKey": "",
+            "secretKey": "",
+            "region": "",
+            "service": "",
+            "sessionToken": "",
+            "addAuthDataToQuery": false
+          },
+          "ntlm": {
+            "username": "",
+            "password": "",
+            "domain": "",
+            "workstation": "",
+            "disableRetryRequest": false
+          },
+          "edgegrid": {
+            "accessToken": "",
+            "clientToken": "",
+            "clientSecret": "",
+            "nonce": "",
+            "timestamp": "",
+            "baseURi": "",
+            "headersToSign": ""
+          },
+          "noauth": {},
+          "jwt": {
+            "addTokenTo": "header",
+            "algorithm": "HS256",
+            "secret": "",
+            "isSecretBase64Encoded": false,
+            "payload": "",
+            "headerPrefix": "Bearer",
+            "queryParamKey": "token",
+            "header": ""
+          },
+          "asap": {
+            "alg": "HS256",
+            "iss": "",
+            "aud": "",
+            "kid": "",
+            "privateKey": "",
+            "sub": "",
+            "claims": "",
+            "exp": ""
+          }
+        },
+        "body": {
+          "mode": "json",
+          "parameter": [],
+          "raw": "",
+          "raw_parameter": [],
+          "raw_schema": {
+            "type": "object"
+          },
+          "binary": null
+        },
+        "pre_tasks": [],
+        "post_tasks": [],
+        "header": {
+          "parameter": []
+        },
+        "query": {
+          "parameter": [],
+          "query_add_equal": 1
+        },
+        "cookie": {
+          "parameter": []
+        },
+        "restful": {
+          "parameter": []
+        }
+      },
+      "response": {
+        "is_check_result": 1,
+        "example": [
+          {
+            "example_id": "1",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Success",
+              "is_default": 1,
+              "code": "200",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "example_id": "2",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Failure",
+              "is_default": -1,
+              "code": "404",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        ]
+      },
+      "description": "",
+      "tags": [],
+      "ai_expect_enable": -1,
+      "is_check_result": 1,
+      "is_socket": 1,
+      "is_locked": -1,
+      "is_force": -1,
+      "attribute_info": {},
+      "protocol": "http/1.1",
+      "ai_expect": {
+        "list": [],
+        "none_math_expect_id": ""
+      },
+      "is_deleted": -1,
+      "is_conflicted": -1,
+      "vscode_version": "1.7.12"
+    },
+    {
+      "project_id": "-1",
+      "target_id": "31f67aeb37f005",
+      "parent_id": "2fef492936d006",
+      "target_type": "sse",
+      "name": "Stream audit reports",
+      "sort": 23,
+      "version": 0,
+      "mark_id": "1",
+      "status": 1,
+      "is_changed": -1,
+      "is_create": -1,
+      "method": "GET",
+      "url": "http://localhost:5000/audit-report/stream",
+      "request": {
+        "auth": {
+          "type": "inherit",
+          "kv": {
+            "key": "",
+            "value": "",
+            "in": "header"
+          },
+          "bearer": {
+            "key": ""
+          },
+          "basic": {
+            "username": "",
+            "password": ""
+          },
+          "digest": {
+            "username": "",
+            "password": "",
+            "realm": "",
+            "nonce": "",
+            "algorithm": "MD5",
+            "qop": "",
+            "nc": "",
+            "cnonce": "",
+            "opaque": "",
+            "disableRetryRequest": false
+          },
+          "oauth1": {
+            "consumerKey": "",
+            "consumerSecret": "",
+            "signatureMethod": "HMAC-SHA1",
+            "addEmptyParamsToSign": true,
+            "includeBodyHash": true,
+            "addParamsToHeader": false,
+            "realm": "",
+            "version": "1.0",
+            "nonce": "",
+            "timestamp": "",
+            "verifier": "",
+            "callback": "",
+            "tokenSecret": "",
+            "token": "",
+            "disableHeaderEncoding": false
+          },
+          "oauth2": {
+            "addTokenTo": "header",
+            "headerPrefix": "Bearer",
+            "access_token": "",
+            "grant_type": "password_credentials",
+            "redirect_uri": "",
+            "authUrl": "",
+            "accessTokenUrl": "",
+            "clientId": "",
+            "clientSecret": "",
+            "username": "",
+            "password": "",
+            "challengeAlgorithm": "S256",
+            "code_verifier": "Bearer",
+            "scope": "",
+            "state": "",
+            "client_authentication": "header",
+            "refreshTokenUrl": "",
+            "authRequestParams": [],
+            "tokenRequestParams": [],
+            "refreshRequestParams": []
+          },
+          "hawk": {
+            "authId": "",
+            "authKey": "",
+            "algorithm": "",
+            "user": "",
+            "nonce": "",
+            "extraData": "",
+            "app": "",
+            "delegation": "",
+            "timestamp": "",
+            "includePayloadHash": false
+          },
+          "awsv4": {
+            "accessKey": "",
+            "secretKey": "",
+            "region": "",
+            "service": "",
+            "sessionToken": "",
+            "addAuthDataToQuery": false
+          },
+          "ntlm": {
+            "username": "",
+            "password": "",
+            "domain": "",
+            "workstation": "",
+            "disableRetryRequest": false
+          },
+          "edgegrid": {
+            "accessToken": "",
+            "clientToken": "",
+            "clientSecret": "",
+            "nonce": "",
+            "timestamp": "",
+            "baseURi": "",
+            "headersToSign": ""
+          },
+          "noauth": {},
+          "jwt": {
+            "addTokenTo": "header",
+            "algorithm": "HS256",
+            "secret": "",
+            "isSecretBase64Encoded": false,
+            "payload": "",
+            "headerPrefix": "Bearer",
+            "queryParamKey": "token",
+            "header": ""
+          },
+          "asap": {
+            "alg": "HS256",
+            "iss": "",
+            "aud": "",
+            "kid": "",
+            "privateKey": "",
+            "sub": "",
+            "claims": "",
+            "exp": ""
+          }
+        },
+        "body": {
+          "mode": "none",
+          "parameter": [],
+          "raw": "",
+          "raw_parameter": [],
+          "raw_schema": {
+            "type": "object"
+          },
+          "binary": null
+        },
+        "pre_tasks": [],
+        "post_tasks": [],
+        "header": {
+          "parameter": []
+        },
+        "query": {
+          "parameter": [],
+          "query_add_equal": 1
+        },
+        "cookie": {
+          "parameter": []
+        },
+        "restful": {
+          "parameter": []
+        }
+      },
+      "response": {
+        "is_check_result": 1,
+        "example": [
+          {
+            "example_id": "1",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "is_default": 1,
+              "code": "200",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "example_id": "2",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "is_default": -1,
+              "code": "404",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        ]
+      },
+      "description": "",
+      "tags": [],
+      "is_socket": 1,
+      "is_locked": -1,
+      "is_force": -1,
+      "attribute_info": {}
+    },
+    {
+      "project_id": "",
+      "target_id": "31f705d277f00b",
+      "parent_id": "2fef492936d006",
+      "target_type": "api",
+      "name": "Get audit reports",
+      "sort": 17,
+      "version": 0,
+      "mark_id": "",
+      "status": 1,
+      "is_changed": -1,
+      "is_create": -1,
+      "method": "GET",
+      "url": "http://localhost:5000/audit-report",
+      "request": {
+        "auth": {
+          "type": "inherit",
+          "kv": {
+            "key": "",
+            "value": "",
+            "in": "header"
+          },
+          "bearer": {
+            "key": ""
+          },
+          "basic": {
+            "username": "",
+            "password": ""
+          },
+          "digest": {
+            "username": "",
+            "password": "",
+            "realm": "",
+            "nonce": "",
+            "algorithm": "MD5",
+            "qop": "",
+            "nc": "",
+            "cnonce": "",
+            "opaque": "",
+            "disableRetryRequest": false
+          },
+          "oauth1": {
+            "consumerKey": "",
+            "consumerSecret": "",
+            "signatureMethod": "HMAC-SHA1",
+            "addEmptyParamsToSign": true,
+            "includeBodyHash": true,
+            "addParamsToHeader": false,
+            "realm": "",
+            "version": "1.0",
+            "nonce": "",
+            "timestamp": "",
+            "verifier": "",
+            "callback": "",
+            "tokenSecret": "",
+            "token": "",
+            "disableHeaderEncoding": false
+          },
+          "oauth2": {
+            "addTokenTo": "header",
+            "headerPrefix": "Bearer",
+            "access_token": "",
+            "grant_type": "password_credentials",
+            "redirect_uri": "",
+            "authUrl": "",
+            "accessTokenUrl": "",
+            "clientId": "",
+            "clientSecret": "",
+            "username": "",
+            "password": "",
+            "challengeAlgorithm": "S256",
+            "code_verifier": "Bearer",
+            "scope": "",
+            "state": "",
+            "client_authentication": "header",
+            "refreshTokenUrl": "",
+            "authRequestParams": [],
+            "tokenRequestParams": [],
+            "refreshRequestParams": []
+          },
+          "hawk": {
+            "authId": "",
+            "authKey": "",
+            "algorithm": "",
+            "user": "",
+            "nonce": "",
+            "extraData": "",
+            "app": "",
+            "delegation": "",
+            "timestamp": "",
+            "includePayloadHash": false
+          },
+          "awsv4": {
+            "accessKey": "",
+            "secretKey": "",
+            "region": "",
+            "service": "",
+            "sessionToken": "",
+            "addAuthDataToQuery": false
+          },
+          "ntlm": {
+            "username": "",
+            "password": "",
+            "domain": "",
+            "workstation": "",
+            "disableRetryRequest": false
+          },
+          "edgegrid": {
+            "accessToken": "",
+            "clientToken": "",
+            "clientSecret": "",
+            "nonce": "",
+            "timestamp": "",
+            "baseURi": "",
+            "headersToSign": ""
+          },
+          "noauth": {},
+          "jwt": {
+            "addTokenTo": "header",
+            "algorithm": "HS256",
+            "secret": "",
+            "isSecretBase64Encoded": false,
+            "payload": "",
+            "headerPrefix": "Bearer",
+            "queryParamKey": "token",
+            "header": ""
+          },
+          "asap": {
+            "alg": "HS256",
+            "iss": "",
+            "aud": "",
+            "kid": "",
+            "privateKey": "",
+            "sub": "",
+            "claims": "",
+            "exp": ""
+          }
+        },
+        "body": {
+          "mode": "none",
+          "parameter": [],
+          "raw": "",
+          "raw_parameter": [],
+          "raw_schema": {
+            "type": "object"
+          },
+          "binary": null
+        },
+        "pre_tasks": [],
+        "post_tasks": [],
+        "header": {
+          "parameter": []
+        },
+        "query": {
+          "parameter": [],
+          "query_add_equal": 1
+        },
+        "cookie": {
+          "parameter": []
+        },
+        "restful": {
+          "parameter": []
+        }
+      },
+      "response": {
+        "is_check_result": 1,
+        "example": [
+          {
+            "example_id": "1",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Success",
+              "is_default": 1,
+              "code": "200",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "example_id": "2",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Failure",
+              "is_default": -1,
+              "code": "404",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        ]
+      },
+      "description": "",
+      "tags": [],
+      "ai_expect_enable": -1,
+      "is_check_result": 1,
+      "is_socket": 1,
+      "is_locked": -1,
+      "is_force": -1,
+      "attribute_info": {},
+      "protocol": "http/1.1",
+      "ai_expect": {
+        "list": [],
+        "none_math_expect_id": ""
+      },
+      "is_deleted": -1,
+      "is_conflicted": -1,
+      "vscode_version": "1.7.12"
+    },
+    {
+      "project_id": "",
+      "target_id": "31ffe7b837f026",
+      "parent_id": "2fef492936d006",
+      "target_type": "api",
+      "name": "Get pending audit reports for feature",
+      "sort": 19,
+      "version": 0,
+      "mark_id": "",
+      "status": 1,
+      "is_changed": -1,
+      "is_create": -1,
+      "method": "GET",
+      "url": "http://localhost:5000/audit-report/feature/68b17049fabce069e7067577/pending",
+      "request": {
+        "auth": {
+          "type": "inherit",
+          "kv": {
+            "key": "",
+            "value": "",
+            "in": "header"
+          },
+          "bearer": {
+            "key": ""
+          },
+          "basic": {
+            "username": "",
+            "password": ""
+          },
+          "digest": {
+            "username": "",
+            "password": "",
+            "realm": "",
+            "nonce": "",
+            "algorithm": "MD5",
+            "qop": "",
+            "nc": "",
+            "cnonce": "",
+            "opaque": "",
+            "disableRetryRequest": false
+          },
+          "oauth1": {
+            "consumerKey": "",
+            "consumerSecret": "",
+            "signatureMethod": "HMAC-SHA1",
+            "addEmptyParamsToSign": true,
+            "includeBodyHash": true,
+            "addParamsToHeader": false,
+            "realm": "",
+            "version": "1.0",
+            "nonce": "",
+            "timestamp": "",
+            "verifier": "",
+            "callback": "",
+            "tokenSecret": "",
+            "token": "",
+            "disableHeaderEncoding": false
+          },
+          "oauth2": {
+            "addTokenTo": "header",
+            "headerPrefix": "Bearer",
+            "access_token": "",
+            "grant_type": "password_credentials",
+            "redirect_uri": "",
+            "authUrl": "",
+            "accessTokenUrl": "",
+            "clientId": "",
+            "clientSecret": "",
+            "username": "",
+            "password": "",
+            "challengeAlgorithm": "S256",
+            "code_verifier": "Bearer",
+            "scope": "",
+            "state": "",
+            "client_authentication": "header",
+            "refreshTokenUrl": "",
+            "authRequestParams": [],
+            "tokenRequestParams": [],
+            "refreshRequestParams": []
+          },
+          "hawk": {
+            "authId": "",
+            "authKey": "",
+            "algorithm": "",
+            "user": "",
+            "nonce": "",
+            "extraData": "",
+            "app": "",
+            "delegation": "",
+            "timestamp": "",
+            "includePayloadHash": false
+          },
+          "awsv4": {
+            "accessKey": "",
+            "secretKey": "",
+            "region": "",
+            "service": "",
+            "sessionToken": "",
+            "addAuthDataToQuery": false
+          },
+          "ntlm": {
+            "username": "",
+            "password": "",
+            "domain": "",
+            "workstation": "",
+            "disableRetryRequest": false
+          },
+          "edgegrid": {
+            "accessToken": "",
+            "clientToken": "",
+            "clientSecret": "",
+            "nonce": "",
+            "timestamp": "",
+            "baseURi": "",
+            "headersToSign": ""
+          },
+          "noauth": {},
+          "jwt": {
+            "addTokenTo": "header",
+            "algorithm": "HS256",
+            "secret": "",
+            "isSecretBase64Encoded": false,
+            "payload": "",
+            "headerPrefix": "Bearer",
+            "queryParamKey": "token",
+            "header": ""
+          },
+          "asap": {
+            "alg": "HS256",
+            "iss": "",
+            "aud": "",
+            "kid": "",
+            "privateKey": "",
+            "sub": "",
+            "claims": "",
+            "exp": ""
+          }
+        },
+        "body": {
+          "mode": "none",
+          "parameter": [],
+          "raw": "",
+          "raw_parameter": [],
+          "raw_schema": {
+            "type": "object"
+          },
+          "binary": null
+        },
+        "pre_tasks": [],
+        "post_tasks": [],
+        "header": {
+          "parameter": []
+        },
+        "query": {
+          "parameter": [],
+          "query_add_equal": 1
+        },
+        "cookie": {
+          "parameter": []
+        },
+        "restful": {
+          "parameter": []
+        }
+      },
+      "response": {
+        "is_check_result": 1,
+        "example": [
+          {
+            "example_id": "1",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Success",
+              "is_default": 1,
+              "code": "200",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "example_id": "2",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Failure",
+              "is_default": -1,
+              "code": "404",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        ]
+      },
+      "description": "",
+      "tags": [],
+      "ai_expect_enable": -1,
+      "is_check_result": 1,
+      "is_socket": 1,
+      "is_locked": -1,
+      "is_force": -1,
+      "attribute_info": {},
+      "protocol": "http/1.1",
+      "ai_expect": {
+        "list": [],
+        "none_math_expect_id": ""
+      },
+      "is_deleted": -1,
+      "is_conflicted": -1,
+      "vscode_version": "1.7.12"
+    },
+    {
+      "project_id": "",
+      "target_id": "3204e5e877f027",
+      "parent_id": "2fef492936d006",
+      "target_type": "api",
+      "name": "Compliance action verify",
+      "sort": 21,
+      "version": 0,
+      "mark_id": "",
+      "status": 1,
+      "is_changed": -1,
+      "is_create": -1,
+      "method": "POST",
+      "url": "http://localhost:5000/audit-report/68b1f77d7aef5b9eb6ca47b1/verify",
+      "request": {
+        "auth": {
+          "type": "inherit",
+          "kv": {
+            "key": "",
+            "value": "",
+            "in": "header"
+          },
+          "bearer": {
+            "key": ""
+          },
+          "basic": {
+            "username": "",
+            "password": ""
+          },
+          "digest": {
+            "username": "",
+            "password": "",
+            "realm": "",
+            "nonce": "",
+            "algorithm": "MD5",
+            "qop": "",
+            "nc": "",
+            "cnonce": "",
+            "opaque": "",
+            "disableRetryRequest": false
+          },
+          "oauth1": {
+            "consumerKey": "",
+            "consumerSecret": "",
+            "signatureMethod": "HMAC-SHA1",
+            "addEmptyParamsToSign": true,
+            "includeBodyHash": true,
+            "addParamsToHeader": false,
+            "realm": "",
+            "version": "1.0",
+            "nonce": "",
+            "timestamp": "",
+            "verifier": "",
+            "callback": "",
+            "tokenSecret": "",
+            "token": "",
+            "disableHeaderEncoding": false
+          },
+          "oauth2": {
+            "addTokenTo": "header",
+            "headerPrefix": "Bearer",
+            "access_token": "",
+            "grant_type": "password_credentials",
+            "redirect_uri": "",
+            "authUrl": "",
+            "accessTokenUrl": "",
+            "clientId": "",
+            "clientSecret": "",
+            "username": "",
+            "password": "",
+            "challengeAlgorithm": "S256",
+            "code_verifier": "Bearer",
+            "scope": "",
+            "state": "",
+            "client_authentication": "header",
+            "refreshTokenUrl": "",
+            "authRequestParams": [],
+            "tokenRequestParams": [],
+            "refreshRequestParams": []
+          },
+          "hawk": {
+            "authId": "",
+            "authKey": "",
+            "algorithm": "",
+            "user": "",
+            "nonce": "",
+            "extraData": "",
+            "app": "",
+            "delegation": "",
+            "timestamp": "",
+            "includePayloadHash": false
+          },
+          "awsv4": {
+            "accessKey": "",
+            "secretKey": "",
+            "region": "",
+            "service": "",
+            "sessionToken": "",
+            "addAuthDataToQuery": false
+          },
+          "ntlm": {
+            "username": "",
+            "password": "",
+            "domain": "",
+            "workstation": "",
+            "disableRetryRequest": false
+          },
+          "edgegrid": {
+            "accessToken": "",
+            "clientToken": "",
+            "clientSecret": "",
+            "nonce": "",
+            "timestamp": "",
+            "baseURi": "",
+            "headersToSign": ""
+          },
+          "noauth": {},
+          "jwt": {
+            "addTokenTo": "header",
+            "algorithm": "HS256",
+            "secret": "",
+            "isSecretBase64Encoded": false,
+            "payload": "",
+            "headerPrefix": "Bearer",
+            "queryParamKey": "token",
+            "header": ""
+          },
+          "asap": {
+            "alg": "HS256",
+            "iss": "",
+            "aud": "",
+            "kid": "",
+            "privateKey": "",
+            "sub": "",
+            "claims": "",
+            "exp": ""
+          }
+        },
+        "body": {
+          "mode": "json",
+          "parameter": [],
+          "raw": "",
+          "raw_parameter": [],
+          "raw_schema": {
+            "type": "object"
+          },
+          "binary": null
+        },
+        "pre_tasks": [],
+        "post_tasks": [],
+        "header": {
+          "parameter": []
+        },
+        "query": {
+          "parameter": [],
+          "query_add_equal": 1
+        },
+        "cookie": {
+          "parameter": []
+        },
+        "restful": {
+          "parameter": []
+        }
+      },
+      "response": {
+        "is_check_result": 1,
+        "example": [
+          {
+            "example_id": "1",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Success",
+              "is_default": 1,
+              "code": "200",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          {
+            "example_id": "2",
+            "raw": "",
+            "raw_parameter": [],
+            "expect": {
+              "name": "Failure",
+              "is_default": -1,
+              "code": "404",
+              "content_type": "json",
+              "verify_type": "schema",
+              "mock": "",
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        ]
+      },
+      "description": "",
+      "tags": [],
+      "ai_expect_enable": -1,
+      "is_check_result": 1,
+      "is_socket": 1,
+      "is_locked": -1,
+      "is_force": -1,
+      "attribute_info": {},
+      "protocol": "http/1.1",
+      "ai_expect": {
+        "list": [],
+        "none_math_expect_id": ""
+      },
+      "is_deleted": -1,
+      "is_conflicted": -1,
+      "vscode_version": "1.7.12"
+    },
+    {
+      "project_id": "",
+      "target_id": "32081aef37f028",
+      "parent_id": "2fef492936d006",
+      "target_type": "api",
+      "name": "Get sources via ids",
+      "sort": 7,
+      "version": 0,
+      "mark_id": "",
+      "status": 1,
+      "is_changed": -1,
+      "is_create": -1,
+      "method": "POST",
+      "url": "http://localhost:5000/sources/ids",
+      "request": {
+        "auth": {
+          "type": "inherit",
+          "kv": {
+            "key": "",
+            "value": "",
+            "in": "header"
+          },
+          "bearer": {
+            "key": ""
+          },
+          "basic": {
+            "username": "",
+            "password": ""
+          },
+          "digest": {
+            "username": "",
+            "password": "",
+            "realm": "",
+            "nonce": "",
+            "algorithm": "MD5",
+            "qop": "",
+            "nc": "",
+            "cnonce": "",
+            "opaque": "",
+            "disableRetryRequest": false
+          },
+          "oauth1": {
+            "consumerKey": "",
+            "consumerSecret": "",
+            "signatureMethod": "HMAC-SHA1",
+            "addEmptyParamsToSign": true,
+            "includeBodyHash": true,
+            "addParamsToHeader": false,
+            "realm": "",
+            "version": "1.0",
+            "nonce": "",
+            "timestamp": "",
+            "verifier": "",
+            "callback": "",
+            "tokenSecret": "",
+            "token": "",
+            "disableHeaderEncoding": false
+          },
+          "oauth2": {
+            "addTokenTo": "header",
+            "headerPrefix": "Bearer",
+            "access_token": "",
+            "grant_type": "password_credentials",
+            "redirect_uri": "",
+            "authUrl": "",
+            "accessTokenUrl": "",
+            "clientId": "",
+            "clientSecret": "",
+            "username": "",
+            "password": "",
+            "challengeAlgorithm": "S256",
+            "code_verifier": "Bearer",
+            "scope": "",
+            "state": "",
+            "client_authentication": "header",
+            "refreshTokenUrl": "",
+            "authRequestParams": [],
+            "tokenRequestParams": [],
+            "refreshRequestParams": []
+          },
+          "hawk": {
+            "authId": "",
+            "authKey": "",
+            "algorithm": "",
+            "user": "",
+            "nonce": "",
+            "extraData": "",
+            "app": "",
+            "delegation": "",
+            "timestamp": "",
+            "includePayloadHash": false
+          },
+          "awsv4": {
+            "accessKey": "",
+            "secretKey": "",
+            "region": "",
+            "service": "",
+            "sessionToken": "",
+            "addAuthDataToQuery": false
+          },
+          "ntlm": {
+            "username": "",
+            "password": "",
+            "domain": "",
+            "workstation": "",
+            "disableRetryRequest": false
+          },
+          "edgegrid": {
+            "accessToken": "",
+            "clientToken": "",
+            "clientSecret": "",
+            "nonce": "",
+            "timestamp": "",
+            "baseURi": "",
+            "headersToSign": ""
+          },
+          "noauth": {},
+          "jwt": {
+            "addTokenTo": "header",
+            "algorithm": "HS256",
+            "secret": "",
+            "isSecretBase64Encoded": false,
+            "payload": "",
+            "headerPrefix": "Bearer",
+            "queryParamKey": "token",
+            "header": ""
+          },
+          "asap": {
+            "alg": "HS256",
+            "iss": "",
+            "aud": "",
+            "kid": "",
+            "privateKey": "",
+            "sub": "",
+            "claims": "",
+            "exp": ""
+          }
+        },
+        "body": {
+          "mode": "json",
+          "parameter": [],
+          "raw": "{\n    \"source_ids\": [\n        \"68b02f14e93fd6bb08376604\",\n        \"68b098ce012b992af4e99c86\"\n    ]\n}",
           "raw_parameter": [],
           "raw_schema": {
             "type": "object"
