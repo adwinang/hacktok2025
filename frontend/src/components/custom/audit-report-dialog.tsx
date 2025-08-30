@@ -61,7 +61,10 @@ export default function AuditReportDialog({
         `${process.env.NEXT_PUBLIC_API_URL}/sources/ids`,
         {
           method: "POST",
-          // headers: { "Content-Type": "application/json" },
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(requestBody),
         }
       );
@@ -92,6 +95,9 @@ export default function AuditReportDialog({
         `${process.env.NEXT_PUBLIC_API_URL}/audit-report/${report.id}/verify`,
         {
           method: "POST",
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
         }
       );
 
@@ -101,7 +107,12 @@ export default function AuditReportDialog({
         );
       }
 
-      toast.success("Audit report has been verified successfully.");
+      toast.success(
+        `Audit report has been verified successfully. ${
+          report.status_change_to !== "pass" &&
+          "Feature creation request and audit report will be sent to the team."
+        }`
+      );
 
       onOpenChange(false);
     } catch (error) {
@@ -122,6 +133,9 @@ export default function AuditReportDialog({
         `${process.env.NEXT_PUBLIC_API_URL}/audit-report/${report.id}/dismiss`,
         {
           method: "POST",
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
         }
       );
 
@@ -181,7 +195,7 @@ export default function AuditReportDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-7xl max-h-[80vh] overflow-hidden">
+      <DialogContent className="min-w-[50vw] max-h-[80vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             <span>Audit Report Details</span>
@@ -195,7 +209,7 @@ export default function AuditReportDialog({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="grid grid-cols-12 gap-6 max-h-[60vh] overflow-hidden">
+        <div className="grid grid-cols-12 gap-6 max-h-[70vh] overflow-hidden h-full">
           {/* Sources Sidebar */}
           <div className="col-span-4 border-r pr-4">
             <h3 className="font-semibold mb-3 text-sm uppercase tracking-wide text-muted-foreground">
@@ -259,7 +273,7 @@ export default function AuditReportDialog({
                 <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
                   Status Change
                 </h3>
-                <div className="flex items-center gap-2 p-3 bg-accent/20 rounded-lg">
+                <div className="flex items-center gap-2 p-3 bg-accent/50 rounded-lg">
                   <Badge variant="outline" className="text-xs">
                     {report.original_status}
                   </Badge>
@@ -308,7 +322,7 @@ export default function AuditReportDialog({
               </div>
 
               {report.needs_action && (
-                <div className="flex items-center gap-2 p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                <div className="flex items-center gap-2 p-3 bg-orange-50 border border-orange-200 rounded-lg mb-1">
                   <AlertTriangle className="h-4 w-4 text-orange-600" />
                   <span className="text-sm font-medium text-orange-700">
                     Action Required
@@ -319,7 +333,7 @@ export default function AuditReportDialog({
 
             {/* Action Buttons */}
             {report.status === "pending" && (
-              <div className="flex justify-end gap-3 pt-4 mt-4 border-t">
+              <div className="flex justify-end gap-3 pt-4 mt-4 border-t mb-1">
                 <Button
                   variant="outline"
                   onClick={handleDismiss}
