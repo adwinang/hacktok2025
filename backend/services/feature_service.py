@@ -1,5 +1,5 @@
 import json
-from typing import AsyncGenerator
+from typing import AsyncGenerator, List
 from model.feature import Feature, FeatureCreateRequest, FeatureUpdateRequest, FeatureStatus
 from repository.feature_repository import FeatureRepositoryAsync
 from datetime import datetime
@@ -26,6 +26,17 @@ class FeatureService:
         try:
             feature_data = await self.feature_repository.get_feature_async(feature_id)
             return Feature(**feature_data)
+        except Exception as e:
+            raise e
+
+    async def get_features_by_tags_async(self, tags: List[str]) -> List[Feature]:
+        try:
+            features_data = await self.feature_repository.get_feature_by_tags_async(tags)
+            features = []
+            for feature_data in features_data:
+                feature = Feature(**feature_data)
+                features.append(feature)
+            return features
         except Exception as e:
             raise e
 

@@ -1,5 +1,5 @@
 import os
-from typing import Any, AsyncGenerator, Dict
+from typing import Any, AsyncGenerator, Dict, List
 import dotenv
 from bson.objectid import ObjectId
 from pymongo import AsyncMongoClient
@@ -26,6 +26,14 @@ class FeatureRepositoryAsync:
         if feature:
             feature["id"] = str(feature.pop("_id"))
         return feature
+
+    async def get_feature_by_tags_async(self, tags: List[str]) -> List[dict]:
+        # Find features that have ANY of the given tags (intersection)
+        features = await self.collection.find({"tags": {"$in": tags}}).to_list(length=None)
+        for feature in features:
+            if "_id" in feature:
+                feature["id"] = str(feature.pop("_id"))
+        return features
 
     async def add_feature_async(self, feature) -> str:
         new_feature = {**feature}
