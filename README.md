@@ -9,7 +9,16 @@ Use `docker compose up` to run all services.
 
 ## Problem
 
-- INSERT CATCHY PROBLEM AND EMPHASISE ON PAIN POINTS
+- As TikTok operates in multiple regions around the world, ensuring every product feature complies with local laws and regulations is a constant challenge. Regulations like Brazil's data localization or the EU's GDPR demand that specific features be designed with geo-specific compliance logic. Without a clear and automated way to track this, we risk:
+1. Legal exposure: Compliance gaps that go undetected until it's too late.
+2. Reactive firefighting: Scrambling to address compliance issues when auditors or regulators come calling.
+3. Operational inefficiency: Overloading teams with manual checks and rework to ensure features are compliant in every region.
+
+To address this, a solution that can dynamically flag features requiring geo-specific compliance logic is needed. We need the ability to quickly answer critical questions such as:
+- "Does this feature need dedicated logic for region-specific compliance?"
+- "How many features have we rolled out that comply with this regulation?"
+  
+Without this automated, traceable, and auditable system in place, scaling global product features while staying compliant becomes increasingly difficult and risky.
 
 ## Our Solution
 
