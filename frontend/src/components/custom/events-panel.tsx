@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { Card } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { AlertTriangle, CheckCircle, Clock, XCircle } from "lucide-react";
@@ -11,6 +11,8 @@ import {
   AuditReportStatus,
 } from "@/types/audit_report";
 import AuditReportDialog from "./audit-report-dialog";
+import { MultiSelect } from "./multi-select";
+import { cn } from "@/lib/utils";
 
 type AuditReportsState = {
   auditReports: AuditReports;
@@ -145,14 +147,43 @@ function AuditReportItem({ report, onClick }: AuditReportItemProps) {
       </div>
 
       <h2 className="text-sm font-semibold mb-1 line-clamp-2">
-        Status Change: {report.original_status} → {report.status_change_to}
+        Status Change:{" "}
+        <span
+          className={cn(
+            report.original_status === "pending" &&
+              "text-yellow-700 bg-yellow-50 border-yellow-200",
+            report.original_status === "pass" &&
+              "text-green-700 bg-green-50 border-green-200",
+            report.original_status === "warning" &&
+              "text-orange-700 bg-orange-50 border-orange-200",
+            report.original_status === "critical" &&
+              "text-red-700 bg-red-50 border-red-200"
+          )}
+        >
+          {report.original_status}
+        </span>{" "}
+        →{" "}
+        <span
+          className={cn(
+            report.status_change_to === "pending" &&
+              "text-yellow-700 bg-yellow-50 border-yellow-200",
+            report.status_change_to === "pass" &&
+              "text-green-700 bg-green-50 border-green-200",
+            report.status_change_to === "warning" &&
+              "text-orange-700 bg-orange-50 border-orange-200",
+            report.status_change_to === "critical" &&
+              "text-red-700 bg-red-50 border-red-200"
+          )}
+        >
+          {report.status_change_to}
+        </span>
       </h2>
 
       <p className="text-xs text-muted-foreground mb-2 line-clamp-3">
         {report.reason}
       </p>
 
-      {report.needs_action && (
+      {report.needs_action && report.status === "pending" && (
         <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">
           <AlertTriangle className="h-3 w-3" />
           Action Required
@@ -295,12 +326,50 @@ export default function EventsPanel() {
     };
   }, [selectedReport]);
 
+  const [statusFilter, setStatusFilter] = useState<AuditReportStatus[]>([]);
+
+  const filteredAuditReports = useMemo(() => {
+    if (statusFilter.length === 0) {
+      return state.auditReports.sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+    }
+    return state.auditReports
+      .filter((report) => statusFilter.includes(report.status))
+      .sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+  }, [state.auditReports, statusFilter]);
+
   return (
     <>
       <div className="flex flex-col h-[calc(100vh-16px)] w-[420px] sticky top-4 mt-4 mr-4 pb-4">
         <Card className="flex flex-col h-full w-full p-4">
-          <div className="flex flex-col gap-2 h-full">
-            <h1 className="text-lg font-bold">Real-time updates</h1>
+          <div className="flex flex-col gap-2 h-full w-full">
+            <h1 className="text-lg font-bold w-full flex items-center">
+              <span>Real-time audit reports</span>
+              <span className="ml-auto flex items-center gap-1">
+                <span className="text-xs text-green-600">Agent Live</span>
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-600"></span>
+                </span>
+              </span>
+            </h1>
+
+            <MultiSelect
+              options={[
+                { label: "Pending", value: "pending" },
+                { label: "Verified", value: "verified" },
+                { label: "Dismissed", value: "dismissed" },
+              ]}
+              onValueChange={(value) =>
+                setStatusFilter(value as AuditReportStatus[])
+              }
+              hideSelectAll
+            />
 
             {state.error && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -316,14 +385,15 @@ export default function EventsPanel() {
               </div>
             )}
 
-            {state.loading && (
+            {/* {state.loading && (
               <div className="p-3 text-center text-sm text-muted-foreground">
                 Loading audit reports...
               </div>
-            )}
+            )} */}
 
             {!state.loading &&
-              state.auditReports.length === 0 &&
+              (state.auditReports.length === 0 ||
+                filteredAuditReports.length === 0) &&
               !state.error && (
                 <div className="p-3 text-center text-sm text-muted-foreground">
                   No audit reports yet
@@ -331,7 +401,7 @@ export default function EventsPanel() {
               )}
 
             <div className="flex flex-col gap-2 overflow-y-scroll h-full">
-              {state.auditReports.map((report) => (
+              {filteredAuditReports.map((report) => (
                 <AuditReportItem
                   key={report.id}
                   report={report}
