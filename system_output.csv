@@ -1,0 +1,217 @@
+audit_report_id,feature_id,feature_name,needs_action,original_status,status_change_to,reason,confidence,status,created_at,updated_at,source_id_1,source_url_1,source_id_2,source_url_2,source_id_3,source_url_3,source_id_4,source_url_4,source_id_5,source_url_5
+68b32215686996383ca06508,68b2ab85c6afbf9a8a5c1098,Curfew login blocker with ASL and GH for Utah minors,True,pending,warning,"The curfew login blocker feature for Utah minors presents several compliance challenges across multiple regulatory dimensions:
+
+1. Age Verification and Consent Requirements:
+- The feature uses ASL (Age-Specific Locator) to detect minor accounts, which partially addresses age verification needs
+- Requires explicit parental consent mechanisms, aligning with Utah Social Media Regulation Act's core requirements
+- Operating in ""ShadowMode"" may conflict with transparency expectations
+
+2. Geographical Enforcement Limitations:
+- Routing enforcement through GH (Geohashing) to apply only within Utah boundaries demonstrates targeted compliance approach
+- Raises questions about consistent implementation across different jurisdictions
+
+3. Potential Compliance Gaps:
+- Lack of user-facing alerts during curfew enforcement could be seen as non-transparent
+- EchoTrace logging provides auditability, but full details of logging mechanism are unclear
+- Nighttime access restrictions align with Utah law's intent to protect minors
+
+4. Regulatory Risk Factors:
+- Pending legal challenges to Utah's Social Media Regulation Act create uncertainty
+- Feature implementation appears proactive but may require further refinement
+- Potential First Amendment challenges regarding speech restrictions
+
+Recommended actions include:
+- Develop more transparent user notification mechanisms
+- Clarify precise age verification and consent processes
+- Prepare for potential legal and regulatory adjustments
+- Conduct comprehensive privacy impact assessment
+
+The feature shows intent to comply but requires careful implementation to fully meet regulatory expectations.",0.75,pending,2025-08-30T08:08:53.243000+00:00,,68b31e6e1dc45e8bf8a85ed9,,68b31e6f1dc45e8bf8a85eda,,68b31e6f1dc45e8bf8a85edb,,68b31e6f1dc45e8bf8a85edc,,68b31e701dc45e8bf8a85edd,
+68b32217686996383ca06509,68b2ab86c6afbf9a8a5c1099,PF default toggle with NR enforcement for California teens,True,pending,pass,"The feature for PF default toggle with NR enforcement for California teens demonstrates strong compliance with California's SB 976 (Protecting Our Kids from Social Media Addiction Act). Key compliance elements include:
+
+1. Geo-specific Implementation: The feature specifically targets users under 18 located in California, directly aligning with the law's geographic scope.
+
+2. Default Settings Protection:
+- PF is disabled by default for minors
+- Requires explicit parental opt-in for override
+- Implements NR (non-removable) enforcement mechanism
+
+3. Parental Control Mechanisms:
+- Enables parents to control access and settings
+- Supports the law's intent to protect minors from potentially addictive social media features
+
+4. Technical Compliance:
+- Geo-detection handled via GH (likely Geohash)
+- Rollout monitored with FR logs
+- Ensures minimal disruption while meeting regulatory requirements
+
+The implementation appears comprehensive and proactively addresses the legislative intent of protecting minors from potentially harmful social media interactions. The feature goes beyond mere compliance by creating a robust, parent-controlled environment for teenage users in California.
+
+Recommended status is PASS, with a high confidence level in the compliance approach.",0.95,pending,2025-08-30T08:08:55.030000+00:00,,68b31e6e1dc45e8bf8a85ed9,,68b31e6f1dc45e8bf8a85eda,,68b31e6f1dc45e8bf8a85edb,,68b31e6f1dc45e8bf8a85edc,,68b31e701dc45e8bf8a85edd,
+68b32217686996383ca0650a,68b2ab87c6afbf9a8a5c109a,Child abuse content scanner using T5 and CDS triggers,True,pending,warning,"The child abuse content scanner feature demonstrates partial compliance with regulatory requirements, but has several key compliance considerations:
+
+Strengths:
+- Directly aligns with US federal law requiring reporting of child sexual abuse content to NCMEC
+- Implements real-time scanning and flagging of suspected materials
+- Supports human validation and logs detection metadata
+- Uses secure channel APIs for reporting
+
+Compliance Gaps:
+1. The Digital Services Act (DSA) introduces additional content moderation requirements that may not be fully addressed:
+- Transparency around algorithmic content detection mechanisms
+- Potential need for more comprehensive risk management frameworks
+- Ensuring proportionality in content moderation approaches
+
+2. The feature's implementation raises potential concerns about:
+- Algorithmic bias in content detection
+- Potential over-removal of content
+- Ensuring user privacy and rights during scanning process
+
+Recommended Actions:
+- Develop detailed documentation on T5 and CDS trigger mechanisms
+- Implement transparent appeal processes for content flagging
+- Conduct regular audits of algorithmic detection accuracy
+- Ensure robust privacy protections during scanning process
+
+The compliance status is changed to WARNING to indicate that while the core regulatory requirements are met, there are significant areas for improvement to align with emerging digital content regulation standards.",0.75,pending,2025-08-30T08:08:55.619000+00:00,,68b31e6e1dc45e8bf8a85ed9,,68b31e6f1dc45e8bf8a85eda,,68b31e6f1dc45e8bf8a85edb,,68b31e6f1dc45e8bf8a85edc,,68b31e701dc45e8bf8a85edd,
+68b32218686996383ca0650b,68b2ab88c6afbf9a8a5c109b,Content visibility lock with NSP for EU DSA,True,pending,warning,"The content visibility lock feature for NSP in the EU DSA context requires careful analysis against the Digital Services Act's transparency and content moderation requirements. 
+
+Key Compliance Considerations:
+1. Regional Enforcement: The feature correctly limits enforcement to the EU region, aligning with the DSA's territorial scope (applies to services targeting EU users).
+
+2. Transparency Mechanisms:
+- The soft blocking mechanism for flagged content supports the DSA's transparency expectations
+- EchoTrace's traceability feature addresses the Act's requirement for accountability in content moderation
+- Redline status for legal review demonstrates a structured approach to content governance
+
+3. Potential Compliance Gaps:
+- Unclear if the feature provides full transparency about why content is flagged
+- The specific criteria for NSP (Notably Systemic Platform) labeling needs clear documentation
+- Detailed audit trails and user notification processes are not explicitly described
+
+4. Risk Mitigation:
+- The feature appears designed to proactively address potential illegal or harmful content
+- Geographical restriction demonstrates intent to comply with regional regulations
+- Legal review mechanism suggests a structured approach to content moderation
+
+Recommendation: Implement more detailed documentation on content flagging criteria, user notification processes, and explicit mapping to DSA transparency requirements to fully align with regulatory expectations.",0.75,pending,2025-08-30T08:08:56.208000+00:00,,68b31e6e1dc45e8bf8a85ed9,,68b31e6f1dc45e8bf8a85eda,,68b31e6f1dc45e8bf8a85edb,,68b31e6f1dc45e8bf8a85edc,,68b31e701dc45e8bf8a85edd,
+68b32218686996383ca0650c,68b2ab89c6afbf9a8a5c109c,Jellybean-based parental notifications for Florida regulation,True,pending,warning,"The Jellybean-based parental notifications feature for Florida regulation presents a complex compliance landscape with several key considerations:
+
+Compliance Strengths:
+- Implements parental control framework for minor user protection
+- Uses behavioral anomaly detection (IMT and BB models)
+- Includes audit logging through CDS
+- Applies restrictions in ShadowMode
+- Uses Glow flags for compliance visibility
+
+Potential Compliance Gaps:
+1. Verification of Parental Consent: The feature description does not explicitly confirm a robust mechanism for verifying parental consent, which is crucial for minor protection regulations.
+
+2. Age Verification Mechanism: While the feature mentions checking behavioral anomalies, there's no clear description of how the system definitively verifies a user's age.
+
+3. Notification and Transparency: The description lacks details about how parents are notified and what specific controls they have over their child's account.
+
+4. Data Privacy Considerations: The feature uses behavioral tracking and monitoring, which may raise privacy concerns, especially for minor users.
+
+Recommended Actions:
+- Develop a clear, documented age verification process
+- Implement explicit parental consent mechanisms
+- Create comprehensive transparency features for parents
+- Ensure full compliance with Florida's Online Protections for Minors law
+- Conduct a detailed privacy impact assessment
+
+The feature shows promise but requires further refinement to fully meet regulatory requirements.",0.75,pending,2025-08-30T08:08:56.789000+00:00,,68b31e6e1dc45e8bf8a85ed9,,68b31e6f1dc45e8bf8a85eda,,68b31e6f1dc45e8bf8a85edb,,68b31e6f1dc45e8bf8a85edc,,68b31e701dc45e8bf8a85edd,
+68b3258b686996383ca06517,68b2ab85c6afbf9a8a5c1098,Curfew login blocker with ASL and GH for Utah minors,True,warning,warning,"The curfew login blocker feature for Utah minors demonstrates partial compliance with the Utah Social Media Regulation Act, but has several significant compliance gaps:
+
+1. Geographical Enforcement: The feature uses GH (presumably Geohashing) to enforce restrictions within Utah boundaries, which aligns with the state-specific requirements.
+
+2. Minor Detection: The ASL (Age/Status Lookup) mechanism for detecting minor accounts is a positive step, but the Utah Act requires verified age determination, which may not be fully implemented.
+
+3. Curfew Restrictions: The feature implements night-hour login restrictions, which partially matches the Utah Act's requirement of preventing minor access between 10:30 p.m. and 6:30 a.m. However, the specific hours need verification.
+
+4. Parental Control Limitations: The ""ShadowMode"" implementation without user-facing alerts may conflict with the Act's requirement for transparent parental control mechanisms.
+
+5. Auditability: The EchoTrace logging provides some auditability, but it's unclear if this meets the quarterly audit requirements specified in the Act.
+
+Recommended Actions:
+- Implement explicit parental consent and account access mechanisms
+- Enhance age verification processes beyond ASL
+- Ensure precise alignment with Utah's specific curfew hours
+- Make parental control features more transparent
+- Develop comprehensive quarterly audit documentation
+
+The feature shows intent to comply but requires refinement to fully meet the Utah Social Media Regulation Act's requirements.",0.75,pending,2025-08-30T08:23:39.428000+00:00,,68b32228686996383ca0650e,https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240SB976,68b32228686996383ca0650f,https://www.flsenate.gov/Session/Bill/2024/3,68b32228686996383ca06510,https://en.wikipedia.org/wiki/Utah_Social_Media_Regulation_Act,68b32228686996383ca06511,https://www.law.cornell.edu/uscode/text/18/2258A,,
+68b3258d686996383ca06518,68b2ab86c6afbf9a8a5c1099,PF default toggle with NR enforcement for California teens,False,pass,pass,"The feature for PF default toggle with NR enforcement for California teens demonstrates strong compliance with California's SB976 (Protecting Our Kids from Social Media Addiction Act). Key compliance elements include:
+
+1. Geo-specific Implementation: The feature specifically targets users under 18 located in California, aligning with the law's definition of a ""minor"" in Section 27000.5(d).
+
+2. Default Settings Compliance: The implementation matches Section 27002(b)(4) requirements by setting a default feed that does not recommend or prioritize content based on user information, with the ability to override only through explicit parental consent.
+
+3. Parental Opt-in Mechanism: The feature includes an explicit parental opt-in process, which satisfies the law's requirement for verifiable parental consent for providing personalized content to minors.
+
+4. Geographical Detection: Using GH for geo-detection ensures accurate application of the regulatory requirements specific to California minors.
+
+5. Monitoring and Logging: FR logs for rollout monitoring demonstrate a proactive approach to compliance tracking.
+
+The design appears to minimize disruption while comprehensively addressing the strict personalization requirements imposed by California's social media regulation for minors. No immediate action is required, as the feature meets the regulatory standards.",0.95,pending,2025-08-30T08:23:41.511000+00:00,,68b32228686996383ca0650e,https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240SB976,68b32228686996383ca0650f,https://www.flsenate.gov/Session/Bill/2024/3,68b32228686996383ca06510,https://en.wikipedia.org/wiki/Utah_Social_Media_Regulation_Act,68b32228686996383ca06511,https://www.law.cornell.edu/uscode/text/18/2258A,,
+68b3258d686996383ca06519,68b2ab87c6afbf9a8a5c109a,Child abuse content scanner using T5 and CDS triggers,True,warning,pass,"The child abuse content scanner feature demonstrates strong compliance with federal child protection regulations, specifically aligning with US federal law requirements for reporting child sexual abuse content to NCMEC (National Center for Missing and Exploited Children). 
+
+Key Compliance Elements:
+- Real-time scanning of uploads for suspected child abuse materials
+- Automated reporting mechanism using CDS (Content Detection System)
+- Secure API routing for reports
+- Support for human validation
+- Metadata logging for internal audits
+- Configurable regional thresholds via backend parameters
+
+The feature directly addresses the mandatory reporting requirements outlined in 18 U.S.C. § 2258A, which mandates electronic service providers to report apparent child pornography or child sexual exploitation content. The implementation includes critical components like:
+1. Automated detection using T5 technology
+2. Secure report generation
+3. Routing to appropriate authorities
+4. Logging and audit trail capabilities
+
+While the feature appears comprehensive, continuous monitoring and periodic review of detection algorithms and reporting mechanisms are recommended to maintain ongoing compliance with evolving federal child protection standards.
+
+The compliance status is upgraded from ""warning"" to ""pass"" due to the feature's robust implementation of child protection reporting mechanisms.",0.95,pending,2025-08-30T08:23:41.925000+00:00,,68b32228686996383ca0650e,https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240SB976,68b32228686996383ca0650f,https://www.flsenate.gov/Session/Bill/2024/3,68b32228686996383ca06510,https://en.wikipedia.org/wiki/Utah_Social_Media_Regulation_Act,68b32228686996383ca06511,https://www.law.cornell.edu/uscode/text/18/2258A,,
+68b3258e686996383ca0651a,68b2ab88c6afbf9a8a5c109b,Content visibility lock with NSP for EU DSA,True,warning,warning,"The content visibility lock feature for NSP in the EU DSA context demonstrates partial compliance with transparency requirements, but several key considerations require attention:
+
+Compliance Strengths:
+- Implements a soft blocking mechanism for flagged content
+- Ensures enforcement is restricted to the EU region
+- Includes EchoTrace for traceability
+- Supports Redline status for legal review
+- Directly references Article 16's removal mechanisms
+
+Compliance Gaps:
+- Lacks explicit details on the specific NSP (Notably Harmful Service Provider) classification criteria
+- Unclear how ""soft Softblock"" precisely meets DSA transparency expectations
+- No explicit description of user notification or appeal mechanisms
+- Limited information on the comprehensive implementation of Article 16 requirements
+
+Recommended Actions:
+1. Clarify the precise definition and criteria for NSP content flagging
+2. Develop detailed user communication protocols for content visibility restrictions
+3. Establish clear appeal and review processes for content visibility limitations
+4. Provide more comprehensive documentation demonstrating alignment with DSA transparency principles
+
+While the feature shows a proactive approach to DSA compliance, additional refinement and documentation are necessary to fully satisfy regulatory expectations.",0.75,pending,2025-08-30T08:23:42.604000+00:00,,68b32228686996383ca0650e,https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240SB976,68b32228686996383ca0650f,https://www.flsenate.gov/Session/Bill/2024/3,68b32228686996383ca06510,https://en.wikipedia.org/wiki/Utah_Social_Media_Regulation_Act,68b32228686996383ca06511,https://www.law.cornell.edu/uscode/text/18/2258A,,
+68b3258f686996383ca0651b,68b2ab89c6afbf9a8a5c109c,Jellybean-based parental notifications for Florida regulation,True,warning,warning,"The Jellybean-based parental notifications feature demonstrates partial compliance with emerging social media minor protection regulations, but requires several key improvements:
+
+1. Verification Mechanisms: While the feature uses verified parent accounts, it lacks explicit details on comprehensive age verification methods as recommended by recent regulations like the California Social Media Addiction Act (Section 27001).
+
+2. Notification Restrictions: The feature includes behavioral anomaly detection and restriction mechanisms, but does not clearly specify compliance with time-based notification restrictions (e.g., blocking notifications during school hours or late night as outlined in Section 27002).
+
+3. Parental Control Granularity: The system provides audit logging and ShadowMode restrictions, but may need to enhance parental control options such as:
+- Limiting daily access duration
+- Controlling algorithmic content recommendations
+- Setting privacy mode defaults
+
+4. Consent and Data Handling: While using IMT and BB models for monitoring, the feature should ensure explicit parental consent documentation and strict data minimization practices as required by emerging regulations.
+
+Recommended actions include:
+- Enhance age verification protocols
+- Implement precise notification time restrictions
+- Expand parental control configuration options
+- Develop clear consent and data handling documentation
+
+The feature shows proactive compliance efforts but requires refinement to fully align with evolving minor protection regulatory frameworks.",0.75,pending,2025-08-30T08:23:43.434000+00:00,,68b32228686996383ca0650e,https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240SB976,68b32228686996383ca0650f,https://www.flsenate.gov/Session/Bill/2024/3,68b32228686996383ca06510,https://en.wikipedia.org/wiki/Utah_Social_Media_Regulation_Act,68b32228686996383ca06511,https://www.law.cornell.edu/uscode/text/18/2258A,,
