@@ -30,9 +30,9 @@ type AuditReportsAction =
   | { type: "SET_INITIAL_AUDIT_REPORTS"; payload: AuditReports }
   | { type: "ADD_AUDIT_REPORT"; payload: AuditReport }
   | {
-      type: "UPDATE_AUDIT_REPORT";
-      payload: { auditReportId: string; auditReportData: AuditReport };
-    }
+    type: "UPDATE_AUDIT_REPORT";
+    payload: { auditReportId: string; auditReportData: AuditReport };
+  }
   | { type: "DELETE_AUDIT_REPORT"; payload: { auditReportId: string } }
   | { type: "ERROR"; payload: string }
   | { type: "RESET_ERROR" };
@@ -131,7 +131,7 @@ function AuditReportItem({ report, onClick }: AuditReportItemProps) {
   };
 
   const statusConfig = getStatusConfig(report.status);
-  const confidencePercentage = Math.round(report.confidence);
+  const confidencePercentage = Math.round(report.confidence * 100);
 
   return (
     <div
@@ -156,13 +156,13 @@ function AuditReportItem({ report, onClick }: AuditReportItemProps) {
         <span
           className={cn(
             report.original_status === "pending" &&
-              "text-yellow-700 bg-yellow-50 border-yellow-200",
+            "text-yellow-700 bg-yellow-50 border-yellow-200",
             report.original_status === "pass" &&
-              "text-green-700 bg-green-50 border-green-200",
+            "text-green-700 bg-green-50 border-green-200",
             report.original_status === "warning" &&
-              "text-orange-700 bg-orange-50 border-orange-200",
+            "text-orange-700 bg-orange-50 border-orange-200",
             report.original_status === "critical" &&
-              "text-red-700 bg-red-50 border-red-200"
+            "text-red-700 bg-red-50 border-red-200"
           )}
         >
           {report.original_status}
@@ -171,13 +171,13 @@ function AuditReportItem({ report, onClick }: AuditReportItemProps) {
         <span
           className={cn(
             report.status_change_to === "pending" &&
-              "text-yellow-700 bg-yellow-50 border-yellow-200",
+            "text-yellow-700 bg-yellow-50 border-yellow-200",
             report.status_change_to === "pass" &&
-              "text-green-700 bg-green-50 border-green-200",
+            "text-green-700 bg-green-50 border-green-200",
             report.status_change_to === "warning" &&
-              "text-orange-700 bg-orange-50 border-orange-200",
+            "text-orange-700 bg-orange-50 border-orange-200",
             report.status_change_to === "critical" &&
-              "text-red-700 bg-red-50 border-red-200"
+            "text-red-700 bg-red-50 border-red-200"
           )}
         >
           {report.status_change_to}
@@ -302,9 +302,8 @@ export default function EventsPanel() {
         );
         dispatch({
           type: "ERROR",
-          payload: `Failed to parse stream event: ${
-            error instanceof Error ? error.message : "Unknown error"
-          }`,
+          payload: `Failed to parse stream event: ${error instanceof Error ? error.message : "Unknown error"
+            }`,
         });
       }
     };

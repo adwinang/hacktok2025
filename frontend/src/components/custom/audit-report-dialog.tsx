@@ -123,7 +123,6 @@ export default function AuditReportDialog({
       setLoadingSources(false);
     }
   };
-
   const handleVerify = async () => {
     if (!report) return;
 
@@ -146,9 +145,8 @@ export default function AuditReportDialog({
       }
 
       toast.success(
-        `Audit report has been verified successfully. ${
-          report.status_change_to !== "pass" &&
-          "Feature creation request and audit report will be sent to the team."
+        `Audit report has been verified successfully. ${report.status_change_to !== "pass" &&
+        "Feature creation request and audit report will be sent to the team."
         }`
       );
 
@@ -229,7 +227,7 @@ export default function AuditReportDialog({
   if (!report) return null;
 
   const statusConfig = getStatusConfig(report.status);
-  const confidencePercentage = Math.round(report.confidence);
+  const confidencePercentage = Math.round(report.confidence * 100);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
