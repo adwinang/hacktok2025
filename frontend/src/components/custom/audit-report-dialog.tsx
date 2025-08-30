@@ -24,6 +24,7 @@ import {
   SourcesResponseSchema,
   SourceIdsRequest,
 } from "@/types/source";
+import { Feature } from "@/types/feature";
 
 interface AuditReportDialogProps {
   report: AuditReport | null;
@@ -36,6 +37,9 @@ export default function AuditReportDialog({
   open,
   onOpenChange,
 }: AuditReportDialogProps) {
+  const [feature, setFeature] = useState<Feature | null>(null);
+  const [loadingFeature, setLoadingFeature] = useState(false);
+  const [featureError, setFeatureError] = useState<string | null>(null);
   const [sources, setSources] = useState<Source[]>([]);
   const [loadingSources, setLoadingSources] = useState(false);
   const [sourcesError, setSourcesError] = useState<string | null>(null);
@@ -47,8 +51,42 @@ export default function AuditReportDialog({
   useEffect(() => {
     if (open && report && report.source_ids.length > 0) {
       fetchSources(report.source_ids);
+      fetchFeature(report.feature_id);
     }
   }, [open, report]);
+
+  const fetchFeature = async (featureId: string) => {
+    setLoadingFeature(true);
+    setFeatureError(null);
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/features/${featureId}`,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch feature: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      // Extract the feature from the nested response structure
+      const featureData = data.feature || data;
+      setFeature(featureData);
+      console.log("Feature fetched successfully", data);
+    } catch (error) {
+      setFeatureError(
+        error instanceof Error ? error.message : "Failed to load feature"
+      );
+      setFeature(null);
+    } finally {
+      setLoadingFeature(false);
+    }
+  };
 
   const fetchSources = async (sourceIds: string[]) => {
     setLoadingSources(true);
@@ -268,6 +306,82 @@ export default function AuditReportDialog({
           {/* Main Content */}
           <div className="col-span-8">
             <div className="space-y-4 max-h-[50vh] overflow-y-auto">
+              {/* Feature Details */}
+              <div className="space-y-2">
+                <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
+                  Feature Details
+                </h3>
+
+                {loadingFeature && (
+                  <div className="flex items-center gap-2 p-3 bg-accent/50 rounded-lg">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span className="text-sm text-muted-foreground">
+                      Loading feature details...
+                    </span>
+                  </div>
+                )}
+
+                {featureError && (
+                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <XCircle className="h-4 w-4 text-red-600" />
+                      <span className="text-sm text-red-600">
+                        {featureError}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {!loadingFeature && !featureError && feature && (
+                  <div className="space-y-3">
+                    <div className="p-3 bg-accent/50 rounded-lg">
+                      <h4 className="font-semibold text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                        Name
+                      </h4>
+                      <p className="text-sm font-medium">{feature.name}</p>
+                    </div>
+
+                    <div className="p-3 bg-accent/50 rounded-lg">
+                      <h4 className="font-semibold text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                        Description
+                      </h4>
+                      <div className="max-h-32 overflow-y-auto">
+                        <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
+                          {feature.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    {feature.tags && feature.tags.length > 0 && (
+                      <div className="p-3 bg-accent/50 rounded-lg">
+                        <h4 className="font-semibold text-xs uppercase tracking-wide text-muted-foreground mb-2">
+                          Tags
+                        </h4>
+                        <div className="flex flex-wrap gap-1">
+                          {feature.tags.map((tag, index) => (
+                            <Badge
+                              key={index}
+                              variant="secondary"
+                              className="text-xs"
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {!loadingFeature && !featureError && !feature && (
+                  <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    <span className="text-sm text-gray-600">
+                      No feature details available
+                    </span>
+                  </div>
+                )}
+              </div>
+
               {/* Status Change */}
               <div className="space-y-2">
                 <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
