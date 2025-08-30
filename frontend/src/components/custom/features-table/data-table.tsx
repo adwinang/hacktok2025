@@ -87,18 +87,18 @@ export function DataTable<TData, TValue>({
                         isFlexibleColumn
                           ? { width: "auto" } // Let flexible columns take remaining space
                           : {
-                              width: `${columnSize}px`,
-                              minWidth: `${columnSize}px`,
-                              maxWidth: `${columnSize}px`,
-                            }
+                            width: `${columnSize}px`,
+                            minWidth: `${columnSize}px`,
+                            maxWidth: `${columnSize}px`,
+                          }
                       }
                     >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -125,10 +125,10 @@ export function DataTable<TData, TValue>({
                           isFlexibleColumn
                             ? { width: "auto" } // Let flexible columns expand
                             : {
-                                width: `${columnSize}px`,
-                                minWidth: `${columnSize}px`,
-                                maxWidth: `${columnSize}px`,
-                              }
+                              width: `${columnSize}px`,
+                              minWidth: `${columnSize}px`,
+                              maxWidth: `${columnSize}px`,
+                            }
                         }
                       >
                         {flexRender(
@@ -146,7 +146,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No features found.
+                  No records found.
                 </TableCell>
               </TableRow>
             )}

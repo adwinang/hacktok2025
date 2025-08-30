@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -15,6 +16,7 @@ interface NumberCardProps {
   value: number;
   footerText: string;
   subFooterText?: string;
+  href?: string; // optional: make the number clickable
 }
 
 export function NumberCard({
@@ -23,6 +25,7 @@ export function NumberCard({
   value,
   footerText,
   subFooterText,
+  href,
 }: NumberCardProps) {
   // Format large numbers (e.g., 1,234 or 1.2K)
   const formatNumber = (num: number): string => {
@@ -43,9 +46,18 @@ export function NumberCard({
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <div className="flex items-center justify-center h-full min-h-[200px]">
-          <span className="text-6xl font-bold text-muted-foreground/80 tracking-tight">
-            {formatNumber(value)}
-          </span>
+          {href ? (
+            <Link
+              href={href}
+              className="text-6xl font-bold text-muted-foreground/80 tracking-tight hover:text-muted-foreground underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-ring rounded"
+            >
+              {formatNumber(value)}
+            </Link>
+          ) : (
+            <span className="text-6xl font-bold text-muted-foreground/80 tracking-tight">
+              {formatNumber(value)}
+            </span>
+          )}
         </div>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">

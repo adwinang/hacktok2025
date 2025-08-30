@@ -36,14 +36,15 @@ export default async function Home() {
             description="Total number of sources"
             value={source_count}
             footerText="Total sources"
-            // subFooterText="Total sources"
+            href="/sources"
+          // subFooterText="Total sources"
           />
           <NumberCard
             title="Total Features"
             description="Total number of features"
             value={feature_count}
             footerText="Total features"
-            // subFooterText="Total features"
+          // subFooterText="Total features"
           />
           <ChartPieLabel
             title="Status Distribution"
@@ -53,12 +54,12 @@ export default async function Home() {
               (status_with_highest_count === "pass"
                 ? "You're good to go!"
                 : status_with_highest_count === "warning"
-                ? "Some need attention."
-                : status_with_highest_count === "pending"
-                ? "Still working on it."
-                : status_with_highest_count === "critical"
-                ? "Requires your urgent attention!"
-                : "")
+                  ? "Some need attention."
+                  : status_with_highest_count === "pending"
+                    ? "Still working on it."
+                    : status_with_highest_count === "critical"
+                      ? "Requires your urgent attention!"
+                      : "")
             }
             subheader="Showing total composition of feature statuses"
             dataKey={dataKey}

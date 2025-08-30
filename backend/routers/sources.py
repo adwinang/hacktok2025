@@ -1,5 +1,6 @@
 from typing import List
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import StreamingResponse
 from model.source import Source, SourceCreateRequest, SourceIdsRequest
 from model.source_content import SourceContentCreateRequest
 
@@ -27,7 +28,9 @@ async def get_sources_via_ids(source_ids_request: SourceIdsRequest):
     """
     try:
         source_service = source_router.source_service
-        sources = await source_service.get_sources_via_ids_async(source_ids_request.source_ids)
+        sources = await source_service.get_sources_via_ids_async(
+            source_ids_request.source_ids
+        )
         return {"success": True, "sources": sources}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -92,7 +95,9 @@ async def get_source_content(url: str):
     """
     try:
         source_content_service = source_router.source_content_service
-        source_contents = await source_content_service.get_source_content_by_source_url_async(url)
+        source_contents = (
+            await source_content_service.get_source_content_by_source_url_async(url)
+        )
         return {"success": True, "url": url, "source_contents": source_contents}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -105,7 +110,9 @@ async def create_source_content(source_content_request: SourceContentCreateReque
     """
     try:
         source_content_service = source_router.source_content_service
-        source_content_id = await source_content_service.create_source_content_async(source_content_request)
+        source_content_id = await source_content_service.create_source_content_async(
+            source_content_request
+        )
         return {"success": True, "source_content_id": source_content_id}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -118,7 +125,9 @@ async def refresh_all_sources():
     """
     try:
         knowledge_base_service = source_router.knowledge_base_service
-        source_contents_updates = await knowledge_base_service.refresh_all_sources_content_async()
+        source_contents_updates = (
+            await knowledge_base_service.refresh_all_sources_content_async()
+        )
         return {"success": True, "source_contents_updates": source_contents_updates}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -131,7 +140,41 @@ async def refresh_given_sources(sources: List[Source]):
     """
     try:
         knowledge_base_service = source_router.knowledge_base_service
-        source_contents_updates = await knowledge_base_service.refresh_given_sources_content_async(sources)
+        source_contents_updates = (
+            await knowledge_base_service.refresh_given_sources_content_async(sources)
+        )
         return {"success": True, "source_contents_updates": source_contents_updates}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@source_router.get("/stream")
+async def stream_sources():
+    """
+    Stream sources in real-time using Server-Sent Events (SSE).
+
+    Sends initial list of sources followed by live updates on insert/update/replace.
+    """
+    try:
+        source_service = source_router.source_service
+
+        async def generate_sse_stream():
+            async for sse_message in source_service.stream_sources_async():
+                yield sse_message
+
+        return StreamingResponse(
+            generate_sse_stream(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS, HEAD",
+                "Access-Control-Allow-Headers": "*",
+                "Access-Control-Max-Age": "3600",
+            },
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to stream sources: {str(e)}"
+        )

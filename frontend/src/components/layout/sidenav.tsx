@@ -21,7 +21,7 @@ export default function Sidenav() {
           </Link>
 
           <Link
-            href="/"
+            href="/sources"
             className="flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-150 group"
           >
             <Settings className="h-5 w-5 text-gray-500 group-hover:text-gray-700" />
