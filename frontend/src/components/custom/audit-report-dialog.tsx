@@ -229,6 +229,18 @@ export default function AuditReportDialog({
   const statusConfig = getStatusConfig(report.status);
   const confidencePercentage = Math.round(report.confidence * 100);
 
+  const getFeatureStatusClasses = (status: string) => {
+    if (status === "pending")
+      return "text-yellow-700 bg-yellow-50 border border-yellow-200 px-1.5 py-0.5 rounded";
+    if (status === "pass")
+      return "text-green-700 bg-green-50 border border-green-200 px-1.5 py-0.5 rounded";
+    if (status === "warning")
+      return "text-orange-700 bg-orange-50 border border-orange-200 px-1.5 py-0.5 rounded";
+    if (status === "critical")
+      return "text-red-700 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded";
+    return "text-muted-foreground";
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="min-w-[50vw] max-h-[80vh] overflow-hidden">
@@ -386,13 +398,13 @@ export default function AuditReportDialog({
                   Status Change
                 </h3>
                 <div className="flex items-center gap-2 p-3 bg-accent/50 rounded-lg">
-                  <Badge variant="outline" className="text-xs">
+                  <span className={getFeatureStatusClasses(report.original_status)}>
                     {report.original_status}
-                  </Badge>
+                  </span>
                   <span className="text-muted-foreground">→</span>
-                  <Badge variant="outline" className="text-xs">
+                  <span className={getFeatureStatusClasses(report.status_change_to)}>
                     {report.status_change_to}
-                  </Badge>
+                  </span>
                   <div className="ml-auto text-xs text-muted-foreground">
                     {confidencePercentage}% confidence
                   </div>
