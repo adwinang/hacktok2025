@@ -34,6 +34,20 @@ Without this automated, traceable, and auditable system in place, scaling global
 7. In Hacktok, we can release a new regulation such as setting social media curfew.
 8. We can see that based on this new regulation, can our knowledge base properly detect this new regulation, and flag out (perhaps by notifying) the feature that needs modification.
 
+## Features and Functionalities
+1. Smart Knowledge Base:
+Automatically updates every cycle with new regulations published globally.
+When new regulations are added, it cross-references against existing product features and flags those that may require modifications to stay compliant.
+2. New Feature Deployment Checks:
+When a new feature is being developed, it is mocked in the system. This allows the knowledge base to flag potential regulatory conflicts before deployment.
+3. Real-time Notifications:
+Features that need modification to comply with new or existing regulations will be flagged, and notifications will be sent to relevant teams for review.
+4. Real-time Audit Reports:
+The system generates detailed, auditable reports for each feature, capturing all the compliance checks performed, the regulations applied, and the feature's compliance status (Pass, Warning, Critical).
+5. Feature Engineering: 
+Sources and features are tagged for efficient matching of relevant features to corresponding regulations, reducing the search space and speeding up the compliance analysis process.
+
+
 ## Architecture
 
 - **Frontend**: Next.js
