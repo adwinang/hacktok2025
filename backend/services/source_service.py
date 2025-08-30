@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import List
-from model.source import Source, SourceCreateRequest
+from model.source import Source, SourceCreateRequest, SourceUpdateRequest
 from repository.source_repository import SourceRepositoryAsync
 from agents.source_tagging_agent import SourceTaggingAgent
 
@@ -48,6 +48,12 @@ class SourceService:
     async def delete_source_async(self, source_id: str) -> bool:
         try:
             return await self.source_repository.remove_source(source_id)
+        except Exception as e:
+            raise e
+
+    async def update_source_async(self, source_id: str, source_request: SourceUpdateRequest) -> bool:
+        try:
+            return await self.source_repository.update_source(source_id, source_request.model_dump())
         except Exception as e:
             raise e
 

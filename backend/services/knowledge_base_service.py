@@ -1,18 +1,20 @@
 from typing import List
-from model.source_content import SourceContent, SourceContentCreateRequest, SourceContentUpdate
-from model.source import Source
+from model.source_content import SourceContentCreateRequest, SourceContentUpdate
+from model.source import Source, SourceUpdateRequest
 
 import requests
 from readability import Document
 
 from services.source_content_service import SourceContentService
 from services.source_service import SourceService
+from agents.source_tagging_agent import SourceTaggingAgent
 
 
 class KnowledgeBaseService:
-    def __init__(self, source_service: SourceService, source_content_service: SourceContentService):
+    def __init__(self, source_service: SourceService, source_content_service: SourceContentService, source_tagging_agent: SourceTaggingAgent):
         self.source_service = source_service
         self.source_content_service = source_content_service
+        self.source_tagging_agent = source_tagging_agent
         pass
 
     async def refresh_all_sources_content_async(self) -> List[SourceContentUpdate]:
@@ -71,6 +73,16 @@ class KnowledgeBaseService:
                     content=actual_content,
                 )
             )
+
+            created_source_content = await self.source_content_service.get_source_content_by_source_url_async(
+                source.source_url
+            )
+
+            # Generate source tags using the source tagging agent
+            source_tags = await self.source_tagging_agent.generate_source_tags(source, created_source_content)
+
+            # Update source tags
+            await self.source_service.update_source_async(source.id, SourceUpdateRequest(tags=source_tags.tags))
 
             # Add the source content update to the list
             source_contents_update.append(

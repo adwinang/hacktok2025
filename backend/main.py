@@ -78,8 +78,10 @@ def create_asgi_app():
         collection_name="sources"
     )
 
+    source_tagging_agent = SourceTaggingAgent()
+
     source_service = SourceService(
-        source_repository=source_repository, source_tagging_agent=SourceTaggingAgent())
+        source_repository=source_repository, source_tagging_agent=source_tagging_agent)
 
     source_content_repository = SourceContentRepositoryAsync(
         db_name="hacktok",
@@ -91,7 +93,9 @@ def create_asgi_app():
 
     knowledge_base_service = KnowledgeBaseService(
         source_service=source_service,
-        source_content_service=source_content_service
+        source_content_service=source_content_service,
+        source_tagging_agent=source_tagging_agent
+
     )
 
     compliance_analysis_service = ComplianceAnalysisService(

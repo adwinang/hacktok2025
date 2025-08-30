@@ -5,6 +5,7 @@ import { DateSchema } from "./date";
 export const SourceSchema = z.object({
   id: z.string(),
   source_url: z.string(),
+  tags: z.array(z.string()).nullable(),
   created_at: DateSchema,
   updated_at: DateSchema.nullable(),
 });
