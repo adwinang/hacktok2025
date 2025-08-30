@@ -68,3 +68,42 @@ export async function createSource(input: {
     };
   }
 }
+
+export async function uploadSourcesCsv(file: File): Promise<{
+  success: boolean;
+  created_count?: number;
+  created_ids?: string[];
+  invalid_count?: number;
+  invalid_rows?: Array<{ row?: number; value?: string; error?: string }>;
+  error?: string;
+}> {
+  try {
+    const form = new FormData();
+    form.append("file", file);
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sources/bulk`, {
+      method: "POST",
+      body: form,
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Failed to upload CSV: ${res.status} ${text}`);
+    }
+
+    const data = await res.json();
+    return {
+      success: true,
+      created_count: data.created_count,
+      created_ids: data.created_ids,
+      invalid_count: data.invalid_count,
+      invalid_rows: data.invalid_rows,
+    };
+  } catch (error: unknown) {
+    console.error("Error uploading sources CSV:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}

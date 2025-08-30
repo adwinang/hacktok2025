@@ -1,8 +1,10 @@
 from typing import List
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, UploadFile, File
 from fastapi.responses import StreamingResponse
 from model.source import Source, SourceCreateRequest, SourceIdsRequest
 from model.source_content import SourceContentCreateRequest
+import csv
+import io
 
 
 source_router = APIRouter(prefix="/sources", tags=["source"])
@@ -45,6 +47,73 @@ async def create_source(source_request: SourceCreateRequest):
         source_service = source_router.source_service
         source_id = await source_service.create_source_async(source_request)
         return {"success": True, "source_id": source_id}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@source_router.post("/bulk")
+async def create_sources_bulk(file: UploadFile = File(...)):
+    """
+    Upload a CSV with one column (URLs) to create multiple sources.
+
+    Returns summary with created IDs and invalid rows.
+    """
+    try:
+        if not file.filename.lower().endswith(".csv"):
+            raise HTTPException(status_code=400, detail="Only CSV files are supported")
+
+        file_bytes = await file.read()
+        # Decode with UTF-8 and strip BOM if present
+        text = file_bytes.decode("utf-8-sig", errors="ignore")
+        reader = csv.reader(io.StringIO(text))
+
+        urls: List[str] = []
+        invalid_rows: List[dict] = []
+
+        row_index = 0
+        for row in reader:
+            row_index += 1
+            if not row:
+                continue
+            url_raw = (row[0] or "").strip()
+            if not url_raw:
+                continue
+            # Validate using Pydantic by attempting to construct the request
+            try:
+                _ = SourceCreateRequest(source_url=url_raw)
+                urls.append(url_raw)
+            except Exception as ve:
+                invalid_rows.append(
+                    {"row": row_index, "value": url_raw, "error": str(ve)}
+                )
+
+        # Deduplicate while preserving order
+        seen = set()
+        deduped_urls: List[str] = []
+        for u in urls:
+            if u not in seen:
+                seen.add(u)
+                deduped_urls.append(u)
+
+        source_service = source_router.source_service
+        created_ids: List[str] = []
+        for u in deduped_urls:
+            try:
+                req = SourceCreateRequest(source_url=u)
+                new_id = await source_service.create_source_async(req)
+                created_ids.append(new_id)
+            except Exception as create_err:
+                invalid_rows.append({"value": u, "error": str(create_err)})
+
+        return {
+            "success": True,
+            "created_count": len(created_ids),
+            "created_ids": created_ids,
+            "invalid_count": len(invalid_rows),
+            "invalid_rows": invalid_rows,
+        }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

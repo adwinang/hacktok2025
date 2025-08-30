@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { createSource } from "@/services/sourceService";
+import { createSource, uploadSourcesCsv } from "@/services/sourceService";
 
 export default function AddSourceDialog({ onCreated }: { onCreated?: () => void }) {
     const router = useRouter();
@@ -12,23 +12,35 @@ export default function AddSourceDialog({ onCreated }: { onCreated?: () => void 
     const [url, setUrl] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [isPending, startTransition] = useTransition();
+    const [csvFile, setCsvFile] = useState<File | null>(null);
 
     function handleSubmit() {
         setError(null);
-        if (!url.trim()) {
-            setError("Source URL is required");
+        const hasCsv = !!csvFile;
+        const hasUrl = !!url.trim();
+        if (!hasCsv && !hasUrl) {
+            setError("Provide a Source URL or upload a CSV");
             return;
         }
         startTransition(async () => {
-            const result = await createSource({
-                source_url: url.trim(),
-            });
-            if (!result.success) {
-                setError(result.error ?? "Failed to create source");
-                return;
+            if (hasCsv) {
+                const result = await uploadSourcesCsv(csvFile!);
+                if (!result.success) {
+                    setError(result.error ?? "Failed to upload CSV");
+                    return;
+                }
+            } else {
+                const result = await createSource({
+                    source_url: url.trim(),
+                });
+                if (!result.success) {
+                    setError(result.error ?? "Failed to create source");
+                    return;
+                }
             }
             setOpen(false);
             setUrl("");
+            setCsvFile(null);
             // Refresh server components (re-fetch sources)
             router.refresh();
             onCreated?.();
@@ -56,6 +68,18 @@ export default function AddSourceDialog({ onCreated }: { onCreated?: () => void 
                             onChange={(e) => setUrl(e.target.value)}
                         />
                     </div>
+                    <div className="space-y-2">
+                        <label htmlFor="csv" className="text-sm font-medium">
+                            Or upload CSV (one URL per line)
+                        </label>
+                        <Input
+                            id="csv"
+                            type="file"
+                            accept=".csv,text/csv"
+                            onChange={(e) => setCsvFile(e.target.files?.[0] ?? null)}
+                        />
+                        <p className="text-xs text-muted-foreground">CSV with a single column of URLs. Header optional.</p>
+                    </div>
                     {error && <p className="text-sm text-red-600">{error}</p>}
                 </div>
                 <DialogFooter>
@@ -63,7 +87,7 @@ export default function AddSourceDialog({ onCreated }: { onCreated?: () => void 
                         Cancel
                     </Button>
                     <Button onClick={handleSubmit} disabled={isPending}>
-                        {isPending ? "Creating..." : "Create"}
+                        {isPending ? (csvFile ? "Uploading..." : "Creating...") : (csvFile ? "Upload" : "Create")}
                     </Button>
                 </DialogFooter>
             </DialogContent>
