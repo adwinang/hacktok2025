@@ -53,18 +53,19 @@ async def stream_audit_reports():
             generate_sse_stream(),
             media_type="text/event-stream",
             headers={
-                'Cache-Control': 'no-cache',
-                'Connection': 'keep-alive',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, HEAD',
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Max-Age': '3600'
-            }
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS, HEAD",
+                "Access-Control-Allow-Headers": "*",
+                "Access-Control-Max-Age": "3600",
+            },
         )
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to stream audit reports: {str(e)}")
+            status_code=500, detail=f"Failed to stream audit reports: {str(e)}"
+        )
 
 
 @audit_report_router.get("/feature/{feature_id}/pending")
@@ -74,8 +75,29 @@ async def get_pending_audit_report_for_feature(feature_id: str):
     """
     try:
         audit_report_service = audit_report_router.audit_report_service
-        audit_report = await audit_report_service.get_pending_audit_report_for_feature_async(feature_id)
+        audit_report = (
+            await audit_report_service.get_pending_audit_report_for_feature_async(
+                feature_id
+            )
+        )
         return {"success": True, "audit_report": audit_report}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@audit_report_router.get("/source/{source_id}")
+async def get_audit_reports_by_source(source_id: str):
+    """
+    Get all audit reports associated with a specific source.
+
+    Matches audit reports where the given source_id exists in the source_ids array.
+    """
+    try:
+        audit_report_service = audit_report_router.audit_report_service
+        audit_reports = await audit_report_service.get_audit_reports_by_source_async(
+            source_id
+        )
+        return {"success": True, "audit_reports": audit_reports}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -87,7 +109,9 @@ async def get_audit_report(audit_report_id: str):
     """
     try:
         audit_report_service = audit_report_router.audit_report_service
-        audit_report = await audit_report_service.get_audit_report_async(audit_report_id)
+        audit_report = await audit_report_service.get_audit_report_async(
+            audit_report_id
+        )
         return {"success": True, "audit_report": audit_report}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -100,7 +124,9 @@ async def execute_audit_report_action(audit_report_id: str):
     """
     try:
         compliance_action_service = audit_report_router.compliance_action_service
-        await compliance_action_service.execute_audit_report_action_async(audit_report_id)
+        await compliance_action_service.execute_audit_report_action_async(
+            audit_report_id
+        )
         return {"success": True, "message": "Audit report action executed successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

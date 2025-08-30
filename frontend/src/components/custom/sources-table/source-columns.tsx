@@ -4,6 +4,7 @@ import { Source } from "@/types/source";
 import { DataTableColumnHeader } from "../features-table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
+import Link from "next/link";
 
 export const columns: ColumnDef<Source>[] = [
     {
@@ -79,6 +80,27 @@ export const columns: ColumnDef<Source>[] = [
         size: 120,
         minSize: 120,
         maxSize: 120,
+    },
+    {
+        id: "audit_reports",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Audit Reports" />
+        ),
+        cell: ({ row }) => {
+            const sourceId = row.original.id;
+            return (
+                <Link
+                    href={`/sources/${sourceId}/audit-reports`}
+                    className="text-sm text-primary hover:underline"
+                >
+                    View reports
+                </Link>
+            );
+        },
+        enableSorting: false,
+        size: 140,
+        minSize: 140,
+        maxSize: 160,
     },
 ];
 

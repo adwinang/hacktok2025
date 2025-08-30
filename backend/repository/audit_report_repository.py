@@ -7,7 +7,7 @@ from pymongo import AsyncMongoClient
 from model.audit_report import AuditReportStatus
 
 dotenv.load_dotenv()
-mongodb_uri = os.getenv('MONGO_URI')
+mongodb_uri = os.getenv("MONGO_URI")
 
 
 class AuditReportRepositoryAsync:
@@ -18,7 +18,9 @@ class AuditReportRepositoryAsync:
 
     async def get_audit_reports_async(self) -> list[dict]:
         try:
-            audit_reports = await self.collection.find().to_list(length=None)
+            audit_reports = (
+                await self.collection.find().sort("created_at", -1).to_list(length=None)
+            )
             for audit_report in audit_reports:
                 if "_id" in audit_report:
                     audit_report["id"] = str(audit_report.pop("_id"))
@@ -28,7 +30,9 @@ class AuditReportRepositoryAsync:
             return []
 
     async def get_audit_report_async(self, audit_report_id: str):
-        audit_report = await self.collection.find_one({"_id": ObjectId(audit_report_id)})
+        audit_report = await self.collection.find_one(
+            {"_id": ObjectId(audit_report_id)}
+        )
         if audit_report:
             audit_report["id"] = str(audit_report.pop("_id"))
         return audit_report
@@ -43,13 +47,17 @@ class AuditReportRepositoryAsync:
 
     async def update_audit_report_async(self, audit_report_id: str, audit_report):
         try:
-            result = await self.collection.update_one({"_id": ObjectId(audit_report_id)}, {"$set": audit_report})
+            result = await self.collection.update_one(
+                {"_id": ObjectId(audit_report_id)}, {"$set": audit_report}
+            )
             return result.modified_count > 0
         except Exception as e:
             print(f"Error updating audit report: {e}")
             return False
 
-    async def get_audit_report_for_feature_async(self, feature_id: str, status: AuditReportStatus = None):
+    async def get_audit_report_for_feature_async(
+        self, feature_id: str, status: AuditReportStatus = None
+    ):
         try:
             query = {"feature_id": feature_id}
             if status is not None:
@@ -62,19 +70,44 @@ class AuditReportRepositoryAsync:
             print(f"Error getting audit report for feature: {e}")
             return None
 
+    async def get_audit_reports_by_source_async(self, source_id: str) -> list[dict]:
+        try:
+            # Match documents where source_id exists in the source_ids array.
+            # Support both string and ObjectId representations just in case.
+            or_conditions = [{"source_ids": source_id}]
+            try:
+                oid = ObjectId(source_id)
+                or_conditions.append({"source_ids": oid})
+            except Exception:
+                pass
+
+            cursor = self.collection.find({"$or": or_conditions}).sort("created_at", -1)
+            audit_reports = await cursor.to_list(length=None)
+            for audit_report in audit_reports:
+                if "_id" in audit_report:
+                    audit_report["id"] = str(audit_report.pop("_id"))
+            return audit_reports
+        except Exception as e:
+            print(f"Error getting audit reports by source: {e}")
+            return []
+
     async def stream_audit_reports(self) -> AsyncGenerator[Dict[str, Any], None]:
         try:
             # Pipeline to match insert, update, replace, and delete operations
             pipeline = [
                 {
                     "$match": {
-                        "operationType": {"$in": ["insert", "update", "replace", "delete"]}
+                        "operationType": {
+                            "$in": ["insert", "update", "replace", "delete"]
+                        }
                     }
                 }
             ]
 
             # Use updateLookup to get full document for updates, inserts will have fullDocument by default
-            change_stream = await self.collection.watch(pipeline, full_document="updateLookup")
+            change_stream = await self.collection.watch(
+                pipeline, full_document="updateLookup"
+            )
 
             try:
                 async for change in change_stream:
@@ -89,7 +122,7 @@ class AuditReportRepositoryAsync:
                             "audit_report_id": audit_report_id,
                             "updated_document": None,  # No document for delete
                             "timestamp": change["clusterTime"],
-                            "resume_token": change["_id"]
+                            "resume_token": change["_id"],
                         }
                     else:
                         # For insert, update, replace operations
@@ -102,7 +135,7 @@ class AuditReportRepositoryAsync:
                             "audit_report_id": full_document["id"],
                             "updated_document": full_document,
                             "timestamp": change["clusterTime"],
-                            "resume_token": change["_id"]
+                            "resume_token": change["_id"],
                         }
 
                     yield change_data
@@ -113,7 +146,7 @@ class AuditReportRepositoryAsync:
             finally:
                 try:
                     await change_stream.close()
-                except:
+                except Exception:
                     pass
 
         except Exception as e:

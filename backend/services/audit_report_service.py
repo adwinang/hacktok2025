@@ -1,7 +1,12 @@
 import json
 from datetime import datetime
 from typing import AsyncGenerator
-from model.audit_report import AuditReport, AuditReportCreateRequest, AuditReportStatus, AuditReportUpdateRequest
+from model.audit_report import (
+    AuditReport,
+    AuditReportCreateRequest,
+    AuditReportStatus,
+    AuditReportUpdateRequest,
+)
 from repository.audit_report_repository import AuditReportRepositoryAsync
 
 
@@ -28,36 +33,62 @@ class AuditReportService:
                 confidence=audit_report.confidence,
                 created_at=datetime.utcnow(),
                 updated_at=None,
-                status=AuditReportStatus.PENDING
+                status=AuditReportStatus.PENDING,
             )
-            audit_report_id = await self.audit_report_repository.create_audit_report_async(audit_report.model_dump())
+            audit_report_id = (
+                await self.audit_report_repository.create_audit_report_async(
+                    audit_report.model_dump()
+                )
+            )
             return audit_report_id
         except Exception as e:
             raise e
 
     async def get_audit_report_async(self, audit_report_id: str):
         try:
-            audit_report = await self.audit_report_repository.get_audit_report_async(audit_report_id)
+            audit_report = await self.audit_report_repository.get_audit_report_async(
+                audit_report_id
+            )
             return audit_report
         except Exception as e:
             raise e
 
-    async def update_audit_report_async(self, audit_report_id: str, audit_report_update_request: AuditReportUpdateRequest):
+    async def update_audit_report_async(
+        self,
+        audit_report_id: str,
+        audit_report_update_request: AuditReportUpdateRequest,
+    ):
         try:
             # Convert Pydantic model to dict, excluding None values
-            update_data = audit_report_update_request.model_dump(
-                exclude_none=True)
+            update_data = audit_report_update_request.model_dump(exclude_none=True)
             # Add updated_at timestamp
             update_data["updated_at"] = datetime.utcnow()
 
-            await self.audit_report_repository.update_audit_report_async(audit_report_id, update_data)
+            await self.audit_report_repository.update_audit_report_async(
+                audit_report_id, update_data
+            )
         except Exception as e:
             raise e
 
     async def get_pending_audit_report_for_feature_async(self, feature_id: str):
         try:
-            audit_report = await self.audit_report_repository.get_audit_report_for_feature_async(feature_id, AuditReportStatus.PENDING)
+            audit_report = (
+                await self.audit_report_repository.get_audit_report_for_feature_async(
+                    feature_id, AuditReportStatus.PENDING
+                )
+            )
             return audit_report
+        except Exception as e:
+            raise e
+
+    async def get_audit_reports_by_source_async(self, source_id: str):
+        try:
+            audit_reports = (
+                await self.audit_report_repository.get_audit_reports_by_source_async(
+                    source_id
+                )
+            )
+            return audit_reports
         except Exception as e:
             raise e
 
@@ -69,20 +100,26 @@ class AuditReportService:
             for audit_report in initial_audit_reports:
                 audit_report_dict = audit_report.copy()
 
-                if "created_at" in audit_report_dict and audit_report_dict["created_at"]:
-                    audit_report_dict["created_at"] = audit_report_dict["created_at"].isoformat(
-                    )
-                if "updated_at" in audit_report_dict and audit_report_dict["updated_at"]:
-                    audit_report_dict["updated_at"] = audit_report_dict["updated_at"].isoformat(
-                    )
+                if (
+                    "created_at" in audit_report_dict
+                    and audit_report_dict["created_at"]
+                ):
+                    audit_report_dict["created_at"] = audit_report_dict[
+                        "created_at"
+                    ].isoformat()
+                if (
+                    "updated_at" in audit_report_dict
+                    and audit_report_dict["updated_at"]
+                ):
+                    audit_report_dict["updated_at"] = audit_report_dict[
+                        "updated_at"
+                    ].isoformat()
 
                 audit_reports_data.append(audit_report_dict)
 
             initial_message = {
                 "type": "initial_data",
-                "data": {
-                    "audit_reports": audit_reports_data
-                }
+                "data": {"audit_reports": audit_reports_data},
             }
 
             yield f"data: {json.dumps(initial_message)}\n\n"
@@ -107,11 +144,13 @@ class AuditReportService:
                     updated_doc = change["updated_document"].copy()
 
                     if "created_at" in updated_doc and updated_doc["created_at"]:
-                        updated_doc["created_at"] = updated_doc["created_at"].isoformat(
-                        )
+                        updated_doc["created_at"] = updated_doc[
+                            "created_at"
+                        ].isoformat()
                     if "updated_at" in updated_doc and updated_doc["updated_at"]:
-                        updated_doc["updated_at"] = updated_doc["updated_at"].isoformat(
-                        )
+                        updated_doc["updated_at"] = updated_doc[
+                            "updated_at"
+                        ].isoformat()
 
                     audit_report_data = updated_doc
 
@@ -121,8 +160,8 @@ class AuditReportService:
                         "operation_type": operation_type,
                         "audit_report_id": change["audit_report_id"],
                         "audit_report_data": audit_report_data,
-                        "timestamp": change["timestamp"].as_datetime().isoformat()
-                    }
+                        "timestamp": change["timestamp"].as_datetime().isoformat(),
+                    },
                 }
 
                 yield f"data: {json.dumps(change_message)}\n\n"
@@ -130,8 +169,6 @@ class AuditReportService:
         except Exception as e:
             error_message = {
                 "type": "error",
-                "data": {
-                    "message": f"Streaming error: {str(e)}"
-                }
+                "data": {"message": f"Streaming error: {str(e)}"},
             }
             yield f"data: {json.dumps(error_message)}\n\n"
