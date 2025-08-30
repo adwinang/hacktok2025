@@ -169,3 +169,16 @@ async def stream_features():
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to stream features: {str(e)}")
+
+
+@feature_router.get("/{feature_id}")
+async def get_feature(feature_id: str):
+    """
+    Retrieve a feature by ID.
+    """
+    try:
+        feature_service = feature_router.feature_service
+        feature = await feature_service.get_feature_async(feature_id)
+        return {"success": True, "feature": feature}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
