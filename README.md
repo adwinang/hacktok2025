@@ -15,8 +15,9 @@ Use `docker compose up` to run all services.
 3. Operational inefficiency: Overloading teams with manual checks and rework to ensure features are compliant in every region.
 
 To address this, a solution that can dynamically flag features requiring geo-specific compliance logic is needed. We need the ability to quickly answer critical questions such as:
-"Does this feature need dedicated logic for region-specific compliance?"
-"How many features have we rolled out that comply with this regulation?"
+- "Does this feature need dedicated logic for region-specific compliance?"
+- "How many features have we rolled out that comply with this regulation?"
+  
 Without this automated, traceable, and auditable system in place, scaling global product features while staying compliant becomes increasingly difficult and risky.
 
 ## Our Solution
