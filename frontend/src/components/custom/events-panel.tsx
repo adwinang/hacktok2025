@@ -5,6 +5,11 @@ import { Card } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { AlertTriangle, CheckCircle, Clock, XCircle } from "lucide-react";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   AuditReports,
   AuditReport,
   AuditReportStreamEventSchema,
@@ -350,13 +355,22 @@ export default function EventsPanel() {
           <div className="flex flex-col gap-2 h-full w-full">
             <h1 className="text-lg font-bold w-full flex items-center">
               <span>Real-time audit reports</span>
-              <span className="ml-auto flex items-center gap-1">
-                <span className="text-xs text-green-600">Agent Live</span>
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-600"></span>
-                </span>
-              </span>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="ml-auto flex items-center gap-1 cursor-pointer">
+                    <span className="text-xs text-green-600">Agent Live</span>
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-600"></span>
+                    </span>
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-xs text-sm">
+                  Background agent is live and running. The background AI agent
+                  will check for online sources for you in real-time, generate
+                  audit reports, and provide feature status updates.
+                </TooltipContent>
+              </Tooltip>
             </h1>
 
             <MultiSelect
