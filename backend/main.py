@@ -98,13 +98,6 @@ def create_asgi_app():
 
     )
 
-    compliance_analysis_service = ComplianceAnalysisService(
-        source_service=source_service,
-        source_content_service=source_content_service,
-        feature_service=feature_service,
-        compliance_analyzer_agent=ComplianceAnalyzerAgent()
-    )
-
     audit_report_repository = AuditReportRepositoryAsync(
         db_name="hacktok",
         collection_name="audit_reports"
@@ -117,6 +110,15 @@ def create_asgi_app():
     compliance_action_service = ComplianceActionService(
         audit_report_service=audit_report_service,
         feature_service=feature_service
+    )
+
+    compliance_analysis_service = ComplianceAnalysisService(
+        source_service=source_service,
+        source_content_service=source_content_service,
+        feature_service=feature_service,
+        audit_report_service=audit_report_service,
+        compliance_action_service=compliance_action_service,
+        compliance_analyzer_agent=ComplianceAnalyzerAgent()
     )
 
     setup_routes(app, feature_service=feature_service,

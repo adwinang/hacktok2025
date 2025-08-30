@@ -3,11 +3,12 @@ from pathlib import Path
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnableParallel
 from model.feature import Feature, FeatureStatus
 from model.source_content import SourceContent
 import dotenv
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict
 
 dotenv.load_dotenv()
 
@@ -41,41 +42,115 @@ class ComplianceAnalyzerAgent:
         for i, source_content in enumerate(source_contents, 1):
             formatted_sources.append(
                 f"Source {i}:\n"
-                f"Title: {source_content.title}\n"
+                # f"Title: {source_content.title}\n"
                 f"URL: {source_content.source_url}\n"
                 f"Content: {source_content.content}"
             )
         return "\n\n".join(formatted_sources)
 
-    async def analyze_compliance(self, source_contents: List[SourceContent], feature: Feature) -> ComplianceAnalyzerAgentResponse:
-        """Analyze feature compliance against regulatory source requirements"""
+    def _create_feature_chain(self, feature: Feature, source_contents: List[SourceContent], system_template: str):
+        """Create a chain for analyzing a single feature against source contents"""
+        formatted_feature = self._format_feature_for_prompt(feature)
+        formatted_sources = self._format_source_contents_for_prompt(
+            source_contents)
+
+        chat_prompt = ChatPromptTemplate.from_messages([
+            SystemMessage(content=system_template),
+            HumanMessage(content="Feature to Analyze:\n{feature_details}"),
+            HumanMessage(
+                content="Regulatory Source Content:\n{source_content}")
+        ])
+
+        chain = chat_prompt | self.structured_llm
+
+        # Return a lambda that will invoke the chain with the formatted data
+        return lambda: chain.ainvoke({
+            "feature_details": formatted_feature,
+            "source_content": formatted_sources
+        })
+
+    async def analyze_compliance(self, source_contents: List[SourceContent], features: List[Feature]) -> List[ComplianceAnalyzerAgentResponse]:
+        """Analyze multiple features compliance against regulatory source requirements in parallel"""
         try:
             # Load system prompt template
             current_dir = Path(__file__).parent
             template_path = current_dir / "templates" / "compliance_analyzer.md"
             system_template_content = template_path.read_text(encoding='utf-8')
 
-            # Format inputs for prompt
-            formatted_feature = self._format_feature_for_prompt(feature)
-            formatted_sources = self._format_source_contents_for_prompt(
-                source_contents)
+            # Create chains for each feature
+            chains_dict = {}
+            for i, feature in enumerate(features):
+                chain_key = f"feature_{i}_{feature.id}" if feature.id else f"feature_{i}"
 
-            # Create the chat prompt with separate system and human messages
-            chat_prompt = ChatPromptTemplate.from_messages([
-                SystemMessage(content=system_template_content),
-                HumanMessage(content="Feature to Analyze:\n{feature_details}"),
-                HumanMessage(
-                    content="Regulatory Source Content:\n{source_content}")
-            ])
+                # Create individual chat prompt for this feature
+                formatted_feature = self._format_feature_for_prompt(feature)
+                formatted_sources = self._format_source_contents_for_prompt(
+                    source_contents)
 
-            # Create chain and invoke
-            chain = chat_prompt | self.structured_llm
-            response = await chain.ainvoke({
-                "feature_details": formatted_feature,
-                "source_content": formatted_sources
-            })
+                chat_prompt = ChatPromptTemplate.from_messages([
+                    SystemMessage(content=system_template_content),
+                    HumanMessage(
+                        content="Feature to Analyze:\n{feature_details}"),
+                    HumanMessage(
+                        content="Regulatory Source Content:\n{source_content}")
+                ])
 
-            return response
+                # Create chain for this specific feature
+                chain = chat_prompt | self.structured_llm
+
+                # Store the chain with pre-formatted data
+                chains_dict[chain_key] = chain.with_config(
+                    {"configurable": {
+                        "feature_details": formatted_feature,
+                        "source_content": formatted_sources
+                    }}
+                )
+
+            # Create parallel runnable
+            parallel_runnable = RunnableParallel(**chains_dict)
+
+            # Execute all chains in parallel
+            # We need to create the input data for each chain
+            parallel_input = {}
+            for i, feature in enumerate(features):
+                chain_key = f"feature_{i}_{feature.id}" if feature.id else f"feature_{i}"
+                formatted_feature = self._format_feature_for_prompt(feature)
+                formatted_sources = self._format_source_contents_for_prompt(
+                    source_contents)
+                parallel_input[chain_key] = {
+                    "feature_details": formatted_feature,
+                    "source_content": formatted_sources
+                }
+
+            # Actually, let's simplify this - create individual chains and run them in parallel
+            chains_dict_simple = {}
+            for i, feature in enumerate(features):
+                chain_key = f"feature_{i}_{feature.id}" if feature.id else f"feature_{i}"
+                formatted_feature = self._format_feature_for_prompt(feature)
+                formatted_sources = self._format_source_contents_for_prompt(
+                    source_contents)
+
+                chat_prompt = ChatPromptTemplate.from_messages([
+                    SystemMessage(content=system_template_content),
+                    HumanMessage(
+                        content=f"Feature to Analyze:\n{formatted_feature}"),
+                    HumanMessage(
+                        content=f"Regulatory Source Content:\n{formatted_sources}")
+                ])
+
+                chains_dict_simple[chain_key] = chat_prompt | self.structured_llm
+
+            # Create parallel runnable and execute
+            parallel_runnable = RunnableParallel(**chains_dict_simple)
+            results_dict = await parallel_runnable.ainvoke({})
+
+            # Convert results dict to list maintaining feature order
+            results_list = []
+            for i, feature in enumerate(features):
+                chain_key = f"feature_{i}_{feature.id}" if feature.id else f"feature_{i}"
+                results_list.append(results_dict[chain_key])
+
+            return results_list
 
         except FileNotFoundError as e:
             raise FileNotFoundError(f"Template file not found: {e}")

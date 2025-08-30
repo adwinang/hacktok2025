@@ -18,9 +18,9 @@ async def analyze_sources(request: AnalyzeSourcesRequest):
     """
     try:
         compliance_analysis_service = compliance_router.compliance_analysis_service
-        await compliance_analysis_service.analyze_sources_impact_async(
+        audit_report_ids = await compliance_analysis_service.analyze_sources_impact_async(
             request.source_ids)
-        return {"success": True}
+        return {"success": True, "audit_report_ids": audit_report_ids}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
